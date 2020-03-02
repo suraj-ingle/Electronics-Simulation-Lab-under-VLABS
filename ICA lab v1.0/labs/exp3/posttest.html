@@ -1,0 +1,326 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title> Virtual Labs </title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <!-- Bootstrap 3.3.6 -->
+        <link rel="stylesheet" href="../../bootstrap/css/bootstrap.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="../../dist/css/AdminLTE.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+        <script>
+            window.onload = function () {
+                document.getElementById("posttest").className = "active treeview";
+            }
+        </script>
+        <style>
+          h2{font-size:18px;}
+          </style>
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+        <!--Navigation Bar-->
+<div class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://iitb.ac.in"><span><img src="../../images/iitb_logo_30dpi.png"></span></a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/">HOME</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/labs/labs.html">LABS</a>
+        </li>
+        <!--<li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/Syllabus_Matrix/syllabus.html">SYLLABUS</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/L1-Form/idea.php">CONTRIBUTE</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/vlab_tool/index.php ">LAB TOOL</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/wiki/doku.php">WIKI</a>
+        </li> -->
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/gitlab/">GITLAB</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+        
+        <div class="wrapper">
+        	<header class="main-header">
+        <!-- Logo -->
+        <a href="../index.html" class="logo">
+        <p align="center" style="font-size:1em;"><b>Integrated Circuits Lab</b></p>
+    </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+          <section class="content-header">
+            <ol class="breadcrumb">
+              <li>
+                <a href="../index.html"><i class="fa fa-dashboard"></i>Integrated Circuits Lab</a>
+              </li>
+              <li>
+                <a href="#">Integrator Circuits</a>
+              </li>
+              <li class="active">Post Test</li>
+            </ol>
+          </section>
+        </nav>
+      </header>
+            
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- search form -->
+          <form action="#" method="get" class="sidebar-form">
+            <div class="input-group"></div>
+          </form>
+          <!-- /.sear ch form -->
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li class="treeview" id="aim">
+                    <a href="index.html">
+                        <i class="fa fa-files-o"></i> <span>Aim</span>
+
+                    </a>
+                </li>
+                <li class="treeview" id="theory">
+                    <a href="theory.html" >
+                        <i class="fa fa-files-o"></i>
+                        <span>Theory</span>
+                    </a>
+                </li>
+             <!--   <li class="treeview" id="numerical">
+                    <a href="numerical.php">
+                        <i class="fa fa-laptop"></i>
+                        <span>Numerical</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                <li class="treeview" id="program">
+                    <a href="program.php">
+                        <i class="fa fa-laptop"></i>
+                        <span>Program</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li> -->
+                <li class="treeview" id="pretest">
+                    <a href="pretest.html">
+                        <i class="fa fa-files-o"></i> <span>Pre Test</span>
+
+                    </a>
+                </li>
+                
+                <li class="treeview" id="procedure">
+                    <a href="procedure.html">
+                        <i class="fa fa-files-o"></i> <span>Procedure</span>
+                    </a>
+                </li>
+                <li class="treeview" id="simulation">
+                    <a href="simulation.html">
+                        <i class="fa fa-laptop"></i>
+                        <span>Simulation</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+
+               <!-- <li class="treeview" id="program">
+                    <a href="result.html">
+                        <i class="fa fa-laptop"></i>
+                        <span>Result</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li> -->
+                
+                <li class="treeview" id="posttest">
+                    <a href=" posttest.html">
+                        <i class=" fa fa-files-o">
+                    </i>
+                    <span>Post Test</span>
+                    <span class="pull-right-container">
+                    </span>
+                    </a>
+                </li>
+                <li class="treeview" id="ref">
+                    <a href="references.html">
+                        <i class="fa fa-files-o"></i>
+                        <span>References</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+   
+            <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+                <section class="content-header">
+                <h1 align="center">
+                        Integrator Circuits                </h1>
+                </section>
+                    <!-- Main content -->
+                    <section class="content">
+                    <h3 style="margin-top:5%"> Post Test </h3>
+                    <p style="font-size:130%; margin-top:2%">
+        
+<script>
+            var ansstring = "22213",optionsperquestion = 4;
+            var r=ansstring.length,i=0,p,tem,rights = 0,j,limit=[];
+                for(r;r>=0;r--)
+                {
+                    limit.push(1);
+                }
+    function a(para)
+    {
+        i=para;
+      if(limit[i]==1)
+      {
+        
+              
+                var que,qued;
+                var opt;
+                j = ansstring[i];
+                j = parseInt(j);
+                tem=(i * optionsperquestion);
+
+                //paragraph id generation
+                {p = j + tem;
+                var tuw=i+1;
+                que="f"+tuw;
+                qued=que+tuw;}
+
+                //option value generation
+               if(j==1)
+                 {opt="A";}
+               else if(j==2)
+                    {opt="B";}
+               else if(j==3)
+                {opt="C";}
+               else
+               {opt="D";}
+
+                if(document.getElementById(p).checked)
+                {document.getElementById(que).innerHTML="The Correct Answer Is "+opt;
+                document.getElementById(qued).innerHTML=null;}
+                else
+                {document.getElementById(qued).innerHTML="The Correct Answer Is "+opt;
+                document.getElementById(que).innerHTML=null;}
+                limit[i]=0;
+         
+      }  
+        } 
+
+            </script>
+</head>
+<body>
+<p id="Q1">
+    <h2>
+        Q.1. Build an inverting integrator circuit with R = 120 K&ohm; and C = 2 nF, &PlusMinus; V<sub>sat</sub> = 13.5 <i>v</i><br> and input signal is a 1 Volt-peak amplitude sinusoidal wave.<br>
+a. Which of the following is a correct expression for the output voltage?
+</h2>
+    <br />
+    <input type="radio" id="1" name="answer1" value="option A" onclick="a(0)"/> v<sub>o</sub> = v<sub>in</sub>(- 1/j&omega;RC)
+    <br /><input type="radio" id="2" name="answer1" value="option B" onclick="a(0);" />v<sub>o</sub> = v<sub>in</sub>(1/j&omega;RC)
+    <br /><input type="radio" id="3" name="answer1" value="option C" onclick="a(0);" />v<sub>o</sub> = v<sub>in</sub>(- j&omega;RC)
+    <br /><input type="radio" id="4" name="answer1" value="option D" onclick="a(0);" />v<sub>o</sub> = v<sub>in</sub>(j&omega;RC)
+</p>
+<p id="f1" style="color: rgb(0, 255, 0)">&nbsp;</p><p id="f11" style="color:rgb(255, 0, 0)"></p>
+<p id="Q2">
+    <h2>
+        Q.2. For the given circuit components, calculate RC value.
+    </h2>
+    <br />
+    <input type="radio" id="5" name="answer2" value="option A" onclick="a(1);"/>24 ms
+    <br /><input type="radio" id="6" name="answer2" value="option B" onclick="a(1);"/>240 ms
+    <br /><input type="radio" id="7" name="answer2" value="option C" onclick="a(1);"/>24 &micro;s
+    <br /><input type="radio" id="8" name="answer2" value="option D" onclick="a(1);"/>240 &micro;s
+</p>
+<p id="f2" style="color: rgb(0, 255, 0)">&nbsp;</p><p id="f22" style="color:rgb(255, 0, 0)"></p>
+<p id="Q3">
+    <h2>
+        Q.3. Build an inverting type integrator with R = 120 K&ohm;; and C = 2 nF, &plusmn; Vsat = 13.5 V and input signal is a 1 Volt-peak amplitude sinusoidal wave.<br>
+    Calculate and verify the magnitude of the peak output voltage when input frequency is 50 Hz, 500 Hz and 1MHz. The peak output voltages are _________, __________ and __________ respectively.
+    </h2>
+    <br />
+    <input type="radio" id="9" name="answer3" value="option A" onclick="a(2);"/>66.3 <i>v</i> at each frequency
+    <br /><input type="radio" id="10" name="answer3" value="option B" onclick="a(2);"/>13.26 <i>v</i>, 1.326 <i>v</i>, 0.1326 <i>v</i>, 66.5 &micro;<i>v</i>
+</p>
+<p id="f3" style="color: rgb(0, 255, 0)">&nbsp;</p><p id="f33" style="color:rgb(255, 0, 0)"></p>
+<p id="Q4">
+    <h2>
+        Q. 4. Calculate the output voltage Vo if the input frequency is reduced to 10 Hz?
+    </h2>
+    <br />
+    <input type="radio" id="13" name="answer4" value="option A" onclick="a(3);"/>v<sub>o</sub> = 66.3 <i>v</i>
+    <br /><input type="radio" id="14" name="answer4" value="option B" onclick="a(3);"/>v<sub>o</sub> = 13.5 <i>v</i>
+    <br /><input type="radio" id="15" name="answer4" value="option C" onclick="a(3);"/>v<sub>o</sub> = 0.126 <i>v</i>
+    <br /><input type="radio" id="16" name="answer4" value="option D" onclick="a(3);"/>v<sub>o</sub> = 66.3 &micro;<i>v</i>
+</p>
+<p id="f4" style="color: rgb(0, 255, 0)">&nbsp;</p><p id="f44" style="color:rgb(255, 0, 0)"></p>
+<p id="Q5">
+    <h2>
+        
+        Q.5. Develop an op-amp integrator circuit and analyze its performance for step, sine and square wave input
+    </h2>
+</p>
+<p id="f5" style="color: rgb(0, 255, 0)">&nbsp;</p><p id="f55" style="color:rgb(255, 0, 0)"></p>
+</body>
+
+
+<!--Post Test of experiment -->
+</p>
+<!-- <iframe src="PO.html"></iframe> -->
+</section>
+<!-- /.content -->
+</div>
+<footer class="main-footer">
+<h4 align="center">This lab is contributed by PVG's COET, Pune.  <!-- Institute Name --> </h4>
+</footer>
+</div>
+
+</body>
+</html>
+
+<!-- ./wrapper -->
+<!-- jQuery 2.2.3 -->
+<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/app.min.js"></script>

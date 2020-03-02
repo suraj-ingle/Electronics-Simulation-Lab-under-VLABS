@@ -1,0 +1,2140 @@
+﻿<!DOCTYPE html>
+<html>
+<head>    
+    <script src="NO_CHANGE_ICA.js"></script>
+
+    <style>
+.onoffswitch {
+    position: relative; width: 94px;
+    height: fit-content;
+    left:48px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 40px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 38px; padding: 0; line-height: 38px;
+    font-size: 22px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 15px;
+    background-color: #EEEEEE; color: #171515;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 15px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 19px; margin: 9.5px;
+    background: #EB0E15;
+    position: absolute; top: 0; bottom: 0;
+    right: 52px;
+    border: 2px solid #999999; border-radius: 40px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+    background-color: #2DF213; 
+}
+
+#mycanvas{
+    
+    border: 2px solid #999999;
+    border-radius: 10px;
+}
+        #l1{
+            display:none;
+            width:800px;
+            height:550px
+            }
+        
+        .control{
+            margin: 15px 5px ;
+        }
+
+        #controls{
+            position:initial;
+            display : grid ;
+            height : 500px; 
+        }
+
+    #controlsCover{        
+        text-align: center;
+        position: absolute;
+        width: 210px;
+        font-size: 20px;
+        color: aliceblue;
+
+        font-family: cursive;
+        background-color: rgba(30, 30, 30, 0.7);
+        }
+
+        #b4{
+            margin: 5px;
+        }
+
+        #b{
+            border: 1px solid #0099ff;
+            border-radius: 5px;
+        }
+        
+
+        #divforue{
+            display: none;
+            background: white
+            }
+
+        #newTable{
+            display: none;
+            background: white
+            }
+
+        #tb1{
+            display: none; 
+            background: white;            
+            width:fit-content;
+            }
+        .croGraphs{
+            position: relative;;
+            display:table-cell;
+            width:360px;
+        }
+
+        #croOP{
+            border: 1px solid ;
+            border-radius: 5px;
+            display:none;
+            position: absolute;
+            top: 100px;
+            left:100px;
+            height:410px;
+        }
+
+        #closeGraph{
+            position: relative;
+            left: 715px;
+            top: -10px;
+            height:20px;
+            width:20px;
+            border-radius: 50%;
+            background: red;
+            border: 0;            
+        }
+
+        .onoffswitch{
+            position: relative;
+            left:48px;
+            }
+
+            input[type="button" i]{
+                margin:5px;
+            }
+        /* #Infreq{display: none; background: white}
+        #Lastfreq{display: none; background: white}
+        #list1{display: none; background: white} */
+
+        /*#drawGraph{display: none;background:gray}
+
+          */  </style>  
+</head>
+<body>
+    <!--
+    <button onclick="document.getElementById('divforue').style.display='block'">Click for Q&A</button>
+    -->
+    
+     <div id="tasks" style="border: solid;width:1065px;">
+        <h3>Task:</h3>
+        <h3>
+                An amplifier has input resistance R1 equal to 10 KΩ. 
+        </br>1. What value of resistor Rf should be chosen so that the gain of the amplifier G = -10?
+        </br>2. Connect the circuit for input V1 = 1 volt and the components selected in part 1.
+        </br>3. Calculate the output voltage and the current flowing through the feedback resistor and verify with the simulation results.
+                </h3></div>
+    <div id ="simContainer" style="display:flex " >
+      
+    <canvas id="mycanvas" width="850" height="504"  onmousemove="mouseOverCanv(event)" ></canvas>
+       
+<br>
+<div id="controls"  height="520" style="border: double;border-color: rgba(32, 11, 5, 0.986); background-color:#696464" >
+    
+       
+    <lable>INPUT TYPE:</lable>
+        <select  id="b4" class="control" onchange="changeKeyTo(3);">
+            <option class="s">--SELECT TYPE</option>
+            <option class="s" value="1">Sinusoidal</option>
+            <option class="s" value="2">Square</option>
+            <option class="s" value="3">Triangular</option>
+        </select>
+
+        <lable>OP-AMP:</lable>
+        <select  id="b5" class="control"  onchange="changeKeyTo(4);" value="this.value">
+            <option class="s">--SELECT OPAMP VOLTAGE</option>
+            <option class="s" value="15">+15V & -15V Vsat</option>
+            <option class="s" value="12">+12V & -12V Vsat</option>
+<!--            <option class="s" value="8">+8V & -8V Vsat</option> --> 
+        </select>
+
+        <select id="list0" class="control" onchange="changeKeyTo(this.value);">
+            <option id ="b10" value="10">--SELECT COMPONENT </option>
+            <option id ="b1" class="b" value="0">Resistor</option>
+            <option id ="b2" class="b" value="1">Feedback Resistor</option>
+           <!-- <option id ="b3" class="b" value="2">Capacitor</option> -->
+            <option id ="b6" class="b" value="5">Ground</option>
+            <option id ="b7" class="b" value="6">Load</option>  
+        </select>
+    
+<input type="button" value="CRO" class="b" id="b8" onclick="changeKeyTo(7);"/>
+       
+
+<input type="button" id="connectButton" class="control s" onclick="changeKeyTo(8);" value="Connect"/>
+
+<input type="button" value="Clear Connections" class="control s" onclick="clearConnection();"/>
+
+<input type="button" id="b9" class="control s" onclick="clearLast();" value="Undo"/>
+
+<input type="button" id="b10" class="control s" onclick="clearCanvas();" value="clear"/>
+
+<input type="button" id="move" onclick="movec();clearConnection();" value="Move"/><br>
+
+<input type="button" value="frequency Response" onclick="freqResponse();"> 
+     
+
+<br>
+    <div class="onoffswitch">
+        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onchange="simStart()">
+        <label class="onoffswitch-label" for="myonoffswitch">
+            <span class="onoffswitch-inner"></span>
+            <span class="onoffswitch-switch"></span>
+        </label>
+    </div>
+
+<div id="controlsCover" >
+
+<lable style="top: 209px;position: relative;" id ="coverLable"></lable></div>
+<br>      
+</div>
+</div>
+
+<div id="croOP" >   
+    <div id="line1" class="croGraphs"></div>
+    <div id="line2" class="croGraphs"></div>
+
+    <button id="closeGraph" onclick="document.getElementById('croOP').style.display = 'none'; " >&times;</button>
+</div>
+
+
+<!--<input type="button" value="frequency Response" onclick="freqResponse();"> --> 
+     
+<div id = "newTable" style="display:none" >
+    <div>
+    <input type="text" id="Infreq" placeholder="Initial Frequency">
+    <input type="text" id="Lastfreq" placeholder="Last Frequency" >
+        
+        
+    <select name="list1" id="list1" onchange="generate();">
+        <option >Select the  Interval</option>
+        <option value="50">Fifty</option>
+        <option value="100">Hundred</option>
+        <option value="200">Two Hundred</option>
+    </select>
+    
+    <table id="tb1" border="1">
+        <tr>
+            <th>Frequency</th>
+            <th>Gain</th>
+            <th>V<sub>Out<sub></th>
+        </tr>
+    </table>
+    </div>
+    <div>
+     <!----  <label><strong></strong>CRO INPUT & OUTPUT SCREEN:</label></strong></label>   
+        <div id="line1" style="width:360px;height:360px"></div>
+        <div id="line2" style="width:360px;height:360px"></div>
+     
+            <input type="button" id="drawGraph" value="DRAW GRAPH" onclick="graph();"/> 
+     -->
+            <div id="l1" ></div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script>
+
+         var canvas = document.getElementById("mycanvas");
+         var context=canvas.getContext("2d");
+         var changeKey = -1;
+         
+                  
+         var componentContainer = [];
+         //var drawLineContainer = [];  // x1,y1,x2,y2 collection 
+         var connectionContainer = []
+         var pairContainer= [];       // connected pin number collection
+         var pair = [];
+         
+         var correctContainer = [[16,10],[10,16],[9,12],[12,9],[10,0],[0,10],[1,6],[6,1],[2,6],[6,2],[1,2],[2,1],[7,12],[12,7],[3,13],[13,3],[8,13],[13,8],[8,3],[3,8],[14,12],[12,14],[13,15],[15,13],[17,12],[12,17]];        
+         
+        var storei=0;
+        var start1=0;
+        var dragFlag = -1;
+        var moveFlag = 0;
+        var do_not_draw = false; 
+        var r1;
+        var r2;
+        var r3;
+               
+        var x1;
+        var y1;
+        var x2;
+        var y2;
+               
+         var rval = 0;
+         var opSat ;
+         var rfeed= 0;
+         var vinp = 0;
+         var gain = 0;
+         var vout = 0;
+         
+         var vinFlag = false;
+         var gainFlag = false;
+         var freq;
+         var flagStack=[];     
+         var flag2=0;
+         var temp=0;
+         var temporary=0;
+        
+         var yctype = 0;
+         var yccount = 0;
+         var yctemp = 0;
+         
+      //CROCHANGES
+         var oscValue = ""; //document.getElementById("textVout").value
+         var time=0;
+         var list_value;
+         var T;
+         var amp;
+         var undo = [];
+         //var res1ghost;
+         //var resfghost;
+
+        var simCoverTime;
+/*
+    function cal1() {
+        var a = 0;
+        for (i = 1; i <= 16; i++)
+        {
+            var r = document.getElementById(i);
+            if (r.value == "correct" && r.checked)
+                a++;
+        }
+        for (i = 21; i <= 36; i++)
+        {
+            var e = document.getElementById(i - 20);
+            var b = document.getElementById("s"+i);
+            b.style.color="black";
+            b.style.backgroundColor="#ffffff";
+            if (e.checked)
+            {
+                b.style.color = "red";
+            }
+            if (e.checked && e.value == "correct")
+            {
+            	b.style.color = "green";
+            	b.style.backgroundColor="#55efc4";
+                r++;
+            }
+
+        }
+        alert("Congratulations! Your score is " + a);
+        //alert("Please try again");
+        document.getElementById("a1").disabled= true;
+        if(a==4)
+        {
+        	document.getElementById("level1").style.visibility="hidden";
+        	document.getElementById("level2").style.visibility="visible";
+
+        }
+    }
+	function cal2() {
+		//alert("CAL2");
+        var aa = 0;
+        for (i = 21; i <= 32; i++)
+        {
+            var r = document.getElementById(i);
+          //  alert("VALUE : "+r.name+"CHECKED : "+ r.checked);
+            if (r.value == "correct" && r.checked)
+            {
+                aa++;
+                //alert("HERE");
+            }
+        }
+        for (i = 41; i <= 52; i++)
+        {
+            var e = document.getElementById(i - 20);
+            var b = document.getElementById("s"+i);
+            b.style.color="black";
+            b.style.backgroundColor="#ffffff";
+            if (e.checked)
+            {
+                b.style.color = "red";
+            }
+            if (e.checked && e.value == "correct")
+            {
+            	b.style.color = "green";
+            	b.style.backgroundColor="#55efc4";
+                r++;
+            }
+
+        }
+        alert("Congratulations! Your score is " + aa);
+        document.getElementById("a2").disabled= true;
+        if(aa==3)
+        {
+        	document.getElementById("level2").style.visibility="hidden";
+        	document.getElementById("level3").style.visibility="visible";
+
+        }
+    }
+    function cal3() {
+        var a = 0;
+        for (i = 41; i <= 52; i++)
+        {
+            var r = document.getElementById(i);
+            if (r.value == "correct" && r.checked)
+                a++;
+        }
+        for (i = 61; i <= 72; i++)
+        {
+            var e = document.getElementById(i - 20);
+            var b = document.getElementById("s"+i);
+            b.style.color="black";
+            b.style.backgroundColor="#ffffff";
+            if (e.checked)
+            {
+                b.style.color = "red";
+            }
+            if (e.checked && e.value == "correct")
+            {
+            	b.style.color = "green";
+            	b.style.backgroundColor="#55efc4";
+                r++;
+            }
+
+        }
+        alert("Congratulations! Your score is " + a);
+          document.getElementById("a3").disabled= true;
+        if(a==3)
+        {
+        	document.getElementById("level3").style.visibility="hidden";
+        	document.getElementById("level4").style.visibility="visible";
+
+        }
+    }
+    function cal4() {
+        var a = 0;
+        for (i = 61; i <= 76; i++)
+        {
+            var r = document.getElementById(i);
+            if (r.value == "correct" && r.checked)
+                a++;
+        }
+        for (i = 81; i <= 96; i++)
+        {
+            var e = document.getElementById(i - 20);
+            var b = document.getElementById("s"+i);
+            b.style.color="black";
+            b.style.backgroundColor="#ffffff";
+            if (e.checked)
+            {
+                b.style.color = "red";
+            }
+            if (e.checked && e.value == "correct")
+            {
+            	b.style.color = "green";
+            	b.style.backgroundColor="#55efc4";
+                r++;
+            }
+
+        }
+        alert("Congratulations! Your score is " + a);
+        document.getElementById("a4").disabled= true;
+        if(a==4)
+        {
+        	document.getElementById("level4").style.visibility="hidden";
+        	document.getElementById("level5").style.visibility="visible";
+
+        }
+    }
+    function cal5() {
+        var a = 0;
+        for (i = 81; i <= 84; i++)
+        {
+            var r = document.getElementById(i);
+            if (r.value == "correct" && r.checked)
+                a++;
+        }
+        for (i = 101; i <= 104; i++)
+        {
+            var e = document.getElementById(i - 20);
+            var b = document.getElementById("s"+i);
+            b.style.color="black";
+            b.style.backgroundColor="#ffffff";
+            if (e.checked)
+            {
+                b.style.color = "red";
+              }
+                if (e.checked && e.value == "correct")
+                {
+                	b.style.color = "green";
+                	b.style.backgroundColor="#55efc4";
+                    r++;
+                }
+
+        }
+        alert("Congratulations! Your score is " + a);
+        document.getElementById("a5").disabled= true;
+        if(a==1)
+        {
+        	document.getElementById("level4").style.visibility="hidden";
+        	document.getElementById("level5").style.visibility="visible";
+
+        }
+        
+    }
+
+    function tryagain1()
+    {
+           for (i = 1; i <= 16; i++)
+           {
+               var r = document.getElementById(i);
+               if (r.value == "correct" && r.checked)
+                   a++;
+                  if(r.checked)
+                  document.getElementById(i).checked=false;
+           }
+
+           if(r.checked)
+                  document.getElementById(i).checked=false;
+
+
+
+           var a = 0;
+           for (i = 21; i <= 36; i++)
+           {
+               var e=document.getElementById(i - 20);
+               var b=document.getElementById("s"+i);
+               if(e.checked)
+               document.getElementById(i-20).checked=false;
+               if(b.checked)
+               document.getElementById(i).checked=false;
+               b.style.color="black";
+               b.style.backgroundColor="white";
+              document.getElementById("a1").disabled= false;
+            }
+
+
+
+    }
+    function tryagain2()
+    {
+           for (i = 21; i <= 32; i++)
+           {
+               var r = document.getElementById(i);
+               if (r.value == "correct" && r.checked)
+                   a++;
+                  if(r.checked)
+                  document.getElementById(i).checked=false;
+           }
+
+           if(r.checked)
+                  document.getElementById(i).checked=false;
+
+
+
+           var a = 0;
+           for (i = 41; i <= 52; i++)
+           {
+               var e=document.getElementById(i - 20);
+               var b=document.getElementById("s"+i);
+               if(e.checked)
+               document.getElementById(i-20).checked=false;
+               if(b.checked)
+               document.getElementById(i).checked=false;
+               b.style.color="black";
+               b.style.backgroundColor="white";
+              document.getElementById("a2").disabled= false;
+            }
+
+
+
+    }
+    function tryagain3()
+    {
+           for (i = 41; i <= 52; i++)
+           {
+               var r = document.getElementById(i);
+               if (r.value == "correct" && r.checked)
+                   a++;
+                  if(r.checked)
+                  document.getElementById(i).checked=false;
+           }
+
+           if(r.checked)
+                  document.getElementById(i).checked=false;
+
+
+
+           var a = 0;
+           for (i = 61; i <= 72; i++)
+           {
+               var e=document.getElementById(i - 20);
+               var b=document.getElementById("s"+i);
+               if(e.checked)
+               document.getElementById(i-20).checked=false;
+               if(b.checked)
+               document.getElementById(i).checked=false;
+               b.style.color="black";
+               b.style.backgroundColor="white";
+              document.getElementById("a3").disabled= false;
+            }
+
+
+
+    }
+    function tryagain4()
+    {
+           for (i = 61; i <= 76; i++)
+           {
+               var r = document.getElementById(i);
+               if (r.value == "correct" && r.checked)
+                   a++;
+                  if(r.checked)
+                  document.getElementById(i).checked=false;
+           }
+
+           if(r.checked)
+                  document.getElementById(i).checked=false;
+
+
+
+           var a = 0;
+           for (i = 81; i <= 96; i++)
+           {
+               var e=document.getElementById(i - 20);
+               var b=document.getElementById("s"+i);
+               if(e.checked)
+               document.getElementById(i-20).checked=false;
+               if(b.checked)
+               document.getElementById(i).checked=false;
+               b.style.color="black";
+               b.style.backgroundColor="white";
+                document.getElementById("a4").disabled= false;
+            }
+
+
+
+    }
+    function tryagain5()
+    {
+           for (i = 81; i <= 84; i++)
+           {
+               var r = document.getElementById(i);
+               if (r.value == "correct" && r.checked)
+                   a++;
+                  if(r.checked)
+                  document.getElementById(i).checked=false;
+           }
+           
+           if(r.checked)
+                  document.getElementById(i).checked=false;
+
+
+
+           var a = 0;
+           for (i = 101; i <= 104; i++)
+           {
+               var e=document.getElementById(i - 20);
+               var b=document.getElementById("s"+i);
+               if(e.checked)
+               document.getElementById(i-20).checked=false;
+               if(b.checked)
+               document.getElementById(i).checked=false;
+               b.style.color="black";
+               b.style.backgroundColor="white";
+                 document.getElementById("a5").disabled= false;
+            }
+
+
+
+    }
+ 
+*/
+        function mouseOverCanv(evt){
+            
+            var rect = canvas.getBoundingClientRect();
+            
+            var x = evt.clientX - rect.left
+            var y = evt.clientY - rect.top
+            x = Math.floor(x/20)*20
+            y = Math.floor(y/20)*20
+
+
+            if(dragFlag == 1 && moveFlag == 2) {
+                //alert("hi");
+                context.clearRect(0,0,canvas.width,canvas.height);
+                console.log(x+" "+y);
+                if(componentContainer[temp].component.type == "R1") {
+                var tempComponent = new r11(canvas,x,y);
+                tempComponent.value = componentContainer[temp].component.value;
+                componentContainer[temp].component = tempComponent;
+                tempComponent.draw();
+                }
+                else if(componentContainer[temp].component.type == "RF") {
+                var tempComponent = new rf(canvas,x,y);
+                tempComponent.value = componentContainer[temp].component.value;
+                componentContainer[temp].component = tempComponent;
+                tempComponent.draw();
+                }
+                else if(componentContainer[temp].component.type == "C") {
+                var tempComponent = new c(canvas,x,y);
+                tempComponent.value = componentContainer[temp].component.value;
+                componentContainer[temp].component = tempComponent;
+                tempComponent.draw();
+                }
+                else if(componentContainer[temp].component.type == "OA") { 
+                var tempComponent = new op(canvas,x,y);
+                tempComponent.value = componentContainer[temp].component.value;
+                componentContainer[temp].component = tempComponent;
+                tempComponent.draw();
+                }
+                else if(componentContainer[temp].component.type == "PS") {
+                var tempComponent = new ps(canvas,x,y);
+                tempComponent.value = componentContainer[temp].component.value;
+                componentContainer[temp].component = tempComponent;
+                tempComponent.draw();
+                }
+                else if(componentContainer[temp].component.type == "G") {
+                var tempComponent = new g(canvas,x,y);
+                tempComponent.value = componentContainer[temp].component.value;
+                componentContainer[temp].component = tempComponent;
+                tempComponent.draw();
+                }
+                else if(componentContainer[temp].component.type == "L") {
+                var tempComponent = new rl(canvas,x,y);
+                tempComponent.value = componentContainer[temp].component.value;
+                componentContainer[temp].component = tempComponent;
+                tempComponent.draw();
+                }
+                else if(componentContainer[temp].component.type == "CRO") {
+                tempComponent = new cro(canvas,x,y);
+                tempComponent.value = "OFF"//componentContainer[temp].component.value;
+                componentContainer[temp].component = tempComponent;
+                tempComponent.draw();
+                }
+                /*else if(componentContainer[temp].component.type == "YC"+yctemp) {
+                    var tempComponent = new YC(canvas,x,y);
+                    tempComponent.value = componentContainer[temp].component.value;
+                    tempComponent.type = "YC"+yctemp;
+                    componentContainer[temp].component = tempComponent;
+                    tempComponent.draw();
+                    console.log("for YC");
+                    console.log(temp);
+                }*/ //yconnector
+                    drawAll();
+                return;
+            }
+            
+
+            if(changeKey == 0)                       // resistor drawing mode
+        	{
+                if(checkOverlap(x-10,y-20,x+115,y+10))  {
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    res1ghost=new r11(canvas,x,y);
+                    res1ghost.alpha = 0.2
+                    res1ghost.draw();                
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else{
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+            }
+            else if(changeKey == 1)                       // resistor drawing mode
+        	{
+                if(checkOverlap(x-10,y-20,x+115,y+10))  {
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    resfghost=new rf(canvas,x,y);
+                    resfghost.alpha = 0.2
+                    resfghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else{
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+            }
+            else if(changeKey == 2)                       // capacitor drawing mode
+        	{
+                if(checkOverlap(x-10,y-20,x+60,y+20))   {
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    capghost=new c(canvas,x,y);
+                    capghost.alpha = 0.2
+                    capghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else{
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+            }
+            else if(changeKey == 3)                       // power supply drawing mode
+        	{
+                if(checkOverlap(x-25,y-80,x+25,y+20))   {
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    sourceghost=new ps(canvas,x,y);
+                    sourceghost.alpha = 0.2
+                    sourceghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else{
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+            }
+            else if(changeKey == 4)                       // op-amp drawing mode
+        	{
+                if(checkOverlap(x-30,y-20,x+90,y+80))   {
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    opampghost=new op(canvas,x,y);
+                    opampghost.alpha = 0.2
+                    opampghost.value = document.getElementById("b5").value;
+                    
+                    opampghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else{
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+            }
+            else if(changeKey == 5)                       // ground drawing mode
+        	{
+                if(checkOverlap(x-20,y-30,x+20,y+15))    {
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    gndghost=new g(canvas,x,y);
+                    gndghost.alpha = 0.2
+                    gndghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else{
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+            }   
+            else if(changeKey == 6)                       // load resistance drawing mode
+        	{
+                if(checkOverlap(x-15,y-15,x+15,y+90))    {
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    loadghost=new rl(canvas,x,y);
+                    loadghost.alpha = 0.2
+                    loadghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else    {
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }  
+            }
+            else if(changeKey == 7)                       // CRO drawing mode
+        	{
+                if(checkOverlap(x,y,x+100,y+75))    {
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    oscghost=new cro(canvas,x,y);
+                    oscghost.alpha = 0.2
+                    oscghost.draw();
+                    drawAll();
+
+                    do_not_draw = true;
+
+                }
+                else{
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }    
+            }
+            else if(changeKey == 8)                       // capacitor drawing mode
+        	{
+
+                context.clearRect(0,0,canvas.width,canvas.height);
+                drawAll()
+                context.beginPath();
+                context.arc(x,y,5,0,2*Math.PI,true);
+                context.fillStyle = "blue"
+                context.fill();
+
+                context.closePath();
+
+            }
+/*
+            else if(changeKey == 10) {
+                context.clearRect(0,0,canvas.width,canvas.height);
+                ycghost=new YC(canvas,x,y);
+                ycghost.alpha = 0.2
+                ycghost.draw();
+                drawAll()
+                console.log("ghost yc drawn")
+            }*/
+        }
+
+        function movec() {
+            moveFlag = 1;
+            dragFlag = 0;
+        }
+       
+
+
+        function mouseevt(x,y)
+        {
+            
+            for(count=0;count<componentContainer.length;count++) {
+                if(x>=componentContainer[count].component.width0 && x<=componentContainer[count].component.width1 && dragFlag == 0 && moveFlag == 1) {
+                    if(y>=componentContainer[count].component.height0 && y<=componentContainer[count].component.height1) {
+                        for(yccount = 0;yccount<=yctype;yccount++) {
+                            if(componentContainer[count].component.type == "YC"+yccount) {
+                                yctemp = yccount;
+                                break;
+                            }
+                        }
+                        dragFlag = 1;
+                        temp = count;
+                        moveFlag = 2;
+                    console.log("selected" + componentContainer[count].component.type);
+                    return;
+                    
+                }
+            }
+            }
+            
+//CROchanges
+
+for(i=0;i<componentContainer.length;i++)
+            {
+                if(componentContainer[i].component.type=="CRO")
+                {  console.log("check1");
+            
+                    if(componentContainer[i].component.x4<x && componentContainer[i].component.x4+43>x && componentContainer[i].component.y4<y && componentContainer[i].component.y4+20>y )
+                        { changeKey=12;
+                           // console.log("checkMain");
+                          //  console.log(componentContainer[i].component.x4,componentContainer[i].component.x4+30,x,componentContainer[i].component.y4,componentContainer[i].component.y4);
+                            
+                            document.getElementById("croOP").style.display = "block"
+
+ //CROCHANGESFORINPUT
+                         if(typeof vinp==="undefined" || typeof freq==="undefined" && typeof rval==="undefined" && typeof rfeed==="undefined" )
+                           {
+                               alert("Please Enter the values of Input Signal\nFrequency\nResistance\nFeedback Resistance");
+                           }
+                           else if(typeof vinp==="undefined" || typeof freq==="undefined" && typeof rval==="undefined")
+                           {
+                               alert("Please Enter the values of Input Signal\nFrequency\nResistance");
+                           }
+                           else if(typeof vinp==="undefined" || typeof freq==="undefined" && typeof rfeed==="undefined" )
+                           {
+                               alert("Please Enter the values of Input Signal\nFrequency\nFeedback Resistance");
+                           }
+                           else if(typeof rval==="undefined" && typeof rfeed==="undefined" )
+                           {
+                               alert("Please Enter the values of Resistance\nFeedback Resistance");
+                           }
+                            
+                            else if(typeof vinp==="undefined" || typeof freq==="undefined")
+                           {
+                               alert("Please enter the value of Input signal & Frequency");
+                           }
+                           else if(typeof rval==="undefined")
+                           {
+                               alert("Please enter the value of Resistance");
+                           }
+                           else if(typeof rfeed==="undefined")
+                           {
+                               alert("Please enter the value of Feedback Resistance");
+                           }
+                         
+
+                        }
+                      
+                }
+            }
+
+//
+
+
+            if(moveFlag == 2) {
+                moveFlag = 0;
+                dragFlag = 0;
+                return;
+             }
+            flag2=0;
+        	if(changeKey == 0)                       // resistor drawing mode
+        	{
+                if(do_not_draw) {
+                    var res1=new r11(canvas,x,y);
+                    
+                    componentContainer.push({ component : res1 , x : x , y : y , x1 : res1.x1 , y1 : res1.y1 , id : "b1"});
+                    undo.push("component");
+                    document.getElementById("b1").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;                      
+                    document.getElementById("b5").selectedIndex = 0;                  
+                    document.getElementById("list0").selectedIndex = 0;
+                    rval=parseFloat(prompt("Please Enter value of resistance in ohms","ohms"))
+                
+                    do{
+                        if(isNaN(rval))
+                        {
+                            alert("Please enter numeric values")
+                            rval=parseFloat(prompt("Please Enter value of resistance in ohms","ohms"))
+                        }
+                        else{break;}
+                    }while(true)
+
+                    res1.value = rval;
+                    res1.draw();
+                }
+
+            }
+        	else if(changeKey == 1)                   // feedback resistor mode
+        	{
+                if(do_not_draw) {
+                    var resf=new rf(canvas,x,y);
+                    
+                    componentContainer.push({ component : resf , x : x , y : y ,  x1 : resf.x1 , y1 : resf.y1 , id : "b2"});
+                    undo.push("component");
+                    document.getElementById("b2").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0
+                    document.getElementById("b5").selectedIndex = 0
+                    document.getElementById("list0").selectedIndex = 0;
+                    
+                    rfeed=parseFloat(prompt("Please Enter value of resistance in ohms","ohms"))
+
+                    do{
+                        //alert(isNaN(rfeed))
+                        if(isNaN(rfeed))
+                        {
+                            alert("Please enter numeric values")
+                            rfeed=parseFloat(prompt("Please Enter value of resistance in ohms","ohms"))
+                        }
+                        else{break;}
+                    }while(true)
+
+                    //gain = (rfeed * -1)/rval;
+                    //document.getElementById("textGain").value = gain;
+                    gainFlag = true;
+                    
+                    resf.value = rfeed
+                    resf.draw();
+                }
+            }
+            else if(changeKey == 2)                   // capacitor mode
+            {
+                if(do_not_draw) {
+                    var cap=new c(canvas,x,y);
+                    
+                    componentContainer.push({ component : cap , x : x , y : y ,  x1 : cap.x1 , y1 : cap.y1 , id : "b3"});
+                    undo.push("component");
+                    
+                    document.getElementById("b3").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;                      
+                    document.getElementById("b5").selectedIndex = 0;                  
+                    document.getElementById("list0").selectedIndex = 0;
+
+                    cap.value = 100 //capacitance
+                    cap.draw();
+                }
+            }
+            else if(changeKey == 3)                     // input signal
+            {
+                if(do_not_draw) {
+                         var source=new ps(canvas,x,y);
+                    
+                    componentContainer.push({ component : source , x : x , y : y , x1 : source.x1 , y1 : source.y1 , id : "b4"});
+                    undo.push("component");
+
+
+                    list_value=parseFloat(document.getElementById("b4").value);
+                    document.getElementById("b4").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;                      
+                    document.getElementById("b5").selectedIndex = 0;                  
+                    document.getElementById("list0").selectedIndex = 0;
+
+                    vinp=parseFloat(prompt("Please Enter value of input voltage in Volts","Volts"));
+                    do{
+                        if(isNaN(vinp))
+                        {
+                            alert("cannot accept empty Values")
+                            vinp=parseFloat(prompt("Please Enter value of input voltage in Volts","Volts"));
+                        }
+                        else{break;}
+  
+                    }while(true);
+
+                    //CROCHANGES/////////////////////
+                    amp=vinp;
+                    console.log(amp);
+
+                    freq=parseFloat(prompt("Please Enter value of frequency","Hz"));
+                    do{
+                        if(isNaN(freq))
+                        {
+                            alert("cannot accept empty Values")
+                            freq=parseFloat(prompt("Please Enter value of frequency","Hz"));
+                        }
+                        else{break;}
+                    }while(true);
+
+                    //CROCHANGES///////////////////////////
+                    T=1/(freq*2);
+                    console.log(T);
+
+                    source.value = vinp
+                    source.draw();
+                    
+                    //document.getElementById("textVin").value = vinp;
+                    //document.getElementById("textFreq").value = freq;
+                    vinFlag = true;
+                }
+            }
+            else if(changeKey == 4)                     // op-amp mode
+		    {
+                if(do_not_draw) {
+                    var opamp=new op(canvas,x,y);
+                    opamp.value = document.getElementById("b5").value;
+                    opSat = parseFloat(opamp.value);
+                    opamp.draw();
+                    componentContainer.push({ component : opamp , x : x , y : y ,  x1 : opamp.x1 , y1 : opamp.y1 , id : "b5"});
+                    undo.push("component");
+                    
+                    document.getElementById("b5").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;                      
+                    document.getElementById("b5").selectedIndex = 0;                  
+                    document.getElementById("list0").selectedIndex = 0;
+
+                }
+            }
+            else if(changeKey == 5)                    //   ground mode
+            {
+                if(do_not_draw) {
+                    var gnd=new g(canvas,x,y);
+                    gnd.draw();
+                    componentContainer.push({ component : gnd , x : x , y : y,  x1 : gnd.x1 , y1 : gnd.y1 , id : "b6"});
+                    undo.push("component");
+                    
+                    document.getElementById("b6").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;                      
+                    document.getElementById("b5").selectedIndex = 0;                  
+                    document.getElementById("list0").selectedIndex = 0;
+
+                }
+            }
+            else if(changeKey == 6)                   // load resistance
+            {
+                if(do_not_draw) {
+                    var load=new rl(canvas,x,y);
+                    
+                    componentContainer.push({ component : load , x : x , y : y ,  x1 : load.x1 , y1 : load.y1 , id : "b7"});
+                    undo.push("component");
+                    
+                    document.getElementById("b7").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;                      
+                    document.getElementById("b5").selectedIndex = 0;                  
+                    document.getElementById("list0").selectedIndex = 0;
+
+                    
+                    load.value = 100
+                    load.draw();
+
+                }
+            }
+            else if(changeKey == 7)                        // cro
+            {
+                if(do_not_draw) {
+                    var osc=new cro(canvas,x,y);
+                    
+                    componentContainer.push({ component : osc, x : x , y : y ,  x1 : osc.x1 , y1 : osc.y1 , id : "b8"});
+                    undo.push("component");
+
+                    document.getElementById("b8").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;                      
+                    document.getElementById("b5").selectedIndex = 0;                  
+                    document.getElementById("list0").selectedIndex = 0;
+
+                   // vout = gain * vinp;
+                  //  vout = Math.round(vout);
+                    osc.value = "OFF";
+                    osc.draw();
+
+                    //interval = setInterval( drawOP,100);
+                }
+            }
+            else if(changeKey == 10) {
+                var yconnector = new YC(canvas,x,y);
+                yconnector.type = "YC"+yctype;
+                yconnector.draw();
+                componentContainer.push({ component : yconnector, x : x , y : y ,  x1 : yconnector.x1 , y1 : yconnector.y1});
+                    undo.push("component");
+                    
+                changeKey = -1;
+                yctype++;
+                console.log(yconnector.type);
+            }
+            else if(changeKey == 8)                       // connections
+            {
+                flag2=1;
+                
+          		for (var i = 0; i < componentContainer.length; i++)
+                {
+
+                	if(componentContainer[i].component.type == "OA")
+                	{
+                    
+                        // dist bw mouse and ip1 of op
+                        r1 = Math.pow(componentContainer[i].component.x1 - x, 2) + Math.pow(componentContainer[i].component.y1 - y, 2);
+                    	r1 = Math.sqrt(r1);
+                        
+                        // dist bw mouse and op of op
+                        r2 = Math.pow(componentContainer[i].component.x2 - x, 2) + Math.pow(componentContainer[i].component.y2 - y, 2);
+                    	r2 = Math.sqrt(r2);
+                        
+                        // dist bw mouse and ip2 of op
+                        r3 = Math.pow(componentContainer[i].component.x3 - x, 2) + Math.pow(componentContainer[i].component.y3 - y, 2);
+                    	r3 = Math.sqrt(r3);
+                    
+                    }                    
+                	else
+                	{
+                    
+                        //var x2=(componentContainer[i].component.x1+x)/2;
+                        //var y2=componentContainer[i].component.y1+y;
+                        
+                        // dist of click from ip pin
+                        r1 = Math.pow(componentContainer[i].component.x1 - x, 2) + Math.pow(componentContainer[i].component.y1 -y, 2);
+                    	r1 = Math.sqrt(r1);
+                        
+                        //dist of click from op pin
+                        r2 = Math.pow(componentContainer[i].component.x2 - x, 2) + Math.pow(componentContainer[i].component.y2 - y, 2);
+                    	r2 = Math.sqrt(r2);
+                    
+                        r3 = 100
+                    }
+
+                if (r2 < 5) // if output of component is clicked
+                {
+                        if(start1 == 0)
+                        {
+                            console.log("First click: op1 of " + i);
+                            storei =i;
+                            start1 =1;
+                            console.log(componentContainer[i].component.opNo)
+                            pair[0] = componentContainer[i].component.opNo
+                            
+                            x1 = componentContainer[i].component.x2
+                            y1 = componentContainer[i].component.y2
+
+                            //drawLineContainer.push([componentContainer[i].component.x2 , componentContainer[i].component.y2]);
+                            break;                                
+                        }
+                        else if (start1 == 1)
+                        {
+                            console.log("second click: op1 of " + i);
+                            
+                            start1 =0;
+                            flag = 2;
+                            console.log(componentContainer[i].component.opNo)    
+                            
+                            // add x2,y2
+                            if(storei == i){
+                                alert("cannot short components")
+                                start1 = 0
+                                break;
+                            }
+                            else{
+                                pair[1] = componentContainer[i].component.opNo
+                               // drawLineContainer[drawLineContainer.length - 1][2] = componentContainer[i].component.x2
+                                //drawLineContainer[drawLineContainer.length - 1][3] = componentContainer[i].component.y2
+
+                                x2 = componentContainer[i].component.x2
+                                y2 = componentContainer[i].component.y2
+
+                                connection = new myConnection(canvas, x1, y1, x2, y2);
+                                connection = lineOverlap(connection); 
+                                connectionContainer.push(connection)
+                                undo.push("connection");
+                                start1 = 0
+                                break;
+                            }
+                        }
+
+                    	
+                    }
+                else if (r1 < 5 )   // if input of component is clicked
+                    {                        
+                        if(start1 == 0)
+                        {
+                            console.log("First click: ip1 of " + i);
+                            storei =i;
+                            start1 = 1;
+                            console.log(componentContainer[i].component.ipNo)
+                            pair[0] = componentContainer[i].component.ipNo
+                            
+                            
+                            x1 = componentContainer[i].component.x1
+                            y1 = componentContainer[i].component.y1
+                            //drawLineContainer.push([componentContainer[i].component.x1 , componentContainer[i].component.y1]);
+                            
+                            
+                            break;                                
+
+                        }
+                        else if (start1 == 1)
+                        {
+                            console.log("second click: ip1 of " + i);
+                            //storei =i;
+                            start1 = 0;
+                            flag = 2;
+                            console.log(componentContainer[i].component.ipNo)
+                            if(storei == i){
+                                alert("cannot short components")
+                                start1 = 0
+                                break;
+                            }
+                            else{
+                                pair[1] = componentContainer[i].component.ipNo
+
+                                x2 = componentContainer[i].component.x1
+                                y2 = componentContainer[i].component.y1
+
+                                //drawLineContainer[drawLineContainer.length - 1][2] = componentContainer[i].component.x1 
+                               // drawLineContainer[drawLineContainer.length - 1][3] = componentContainer[i].component.y1
+                            
+                                connection = new myConnection(canvas, x1, y1, x2, y2);
+                                connection = lineOverlap(connection); 
+                                connectionContainer.push(connection)
+                                undo.push("connection");
+                                start1 = 0
+                                break;
+                            }
+                        }                                    
+                    }
+                else if(r3 < 5) //if second ip of opamp is clicked
+                    {   
+                        if(start1 == 0)
+                        {
+                            console.log("First click: ip2 of " + i);
+
+                            storei =i;
+                            start1 =1;
+                            console.log(componentContainer[i].component.ip2No)
+                            pair[0] = componentContainer[i].component.ip2No  
+                            
+                            x1 = componentContainer[i].component.x3
+                            y1 = componentContainer[i].component.y3
+
+                            //drawLineContainer.push([componentContainer[i].component.x3 , componentContainer[i].component.y3]);
+                            break;                                
+                        }
+                        else if (start1 == 1)
+                        {
+                            console.log("second click: ip2 of " + i);
+                            //storei =i;
+                            console.log(componentContainer[i].component.ip2No)
+                            if(storei == i)
+                            {
+                                alert("cannot short components")
+                                start1 = 0
+                                break;
+                            }
+                            else{
+                            
+                            pair[1] = componentContainer[i].component.ip2No
+                            
+                            x2 = componentContainer[i].component.x3
+                            y2 = componentContainer[i].component.y3
+                            
+                           // drawLineContainer[drawLineContainer.length - 1][2] = componentContainer[i].component.x3 
+                           // drawLineContainer[drawLineContainer.length - 1][3] = componentContainer[i].component.y3
+                            
+                            connection = new myConnection(canvas, x1, y1, x2, y2);
+                            connection = lineOverlap(connection); 
+                            connectionContainer.push(connection)
+                            undo.push("connection");
+                            start1 = 0
+                            break;
+                            }
+                        }
+                    }
+                    /*else if(r1>5 && r2> 5 && r3>5)
+                    {
+                        alert("outside")
+                    }*/
+                   
+                    
+
+                }
+                
+                if(pair.length == 2)
+                {   
+                   // alert("adding pair")
+                    pairContainer.push(pair)
+
+                    pair = []
+                    var flag = 2
+                }
+                
+
+                
+                if(flag == 2) // if flag == 2 redraw everything 
+                {
+                 drawAll()
+				}
+				flag = 0;
+            }
+            else if(changeKey==12)
+            {  
+                
+                console.log(list_value);
+                alert(list_value);
+                console.log("///////");
+                switch(list_value)
+               {
+    case 1:
+        Sine_Input_for_inverter();
+        break;
+
+    case 3:
+        Triangular_Input_For_inverter();
+        break;
+
+        case 2:
+        Square_Input_for_inverter();
+        break;
+            }
+        }
+
+       else
+       {
+       alert("Select a component");
+       }
+ 
+     
+       /*if(gainFlag == true && vinFlag == true)
+       {
+               vout = gain * vinp;
+               vout = Math.round(vout);
+       		//document.getElementById("textVout").value = vout;
+       }*/
+       flagStack.push(flag2);
+
+       gain = (rfeed * -1)/rval;
+       vout = gain * vinp;
+       
+
+   }
+ 
+var allCorrect = 1;
+
+        function check()
+        { 
+            var allCorrect = 1;
+            //alert("see");
+            for(i=0; i<pairContainer.length; i++)
+            { 
+                      var correct = false;
+                      console.log(pairContainer[0][0]+"And"+pairContainer[0][1]);
+                for(j=0; j<correctContainer.length; j++)
+                {
+                    //var c1=0;
+                    if(pairContainer[i][0]==correctContainer[j][0] && pairContainer[i][1]==correctContainer[j][1] )
+                    {
+
+                     // alert("see3"); 
+                      correct = true;
+                      //alert(correct);
+                       c1=1;
+                       break;
+                     //console.log(ipNo+"+"+opNo);
+                    }
+                    
+                    //break;
+                }
+
+                if(correct == true)
+                {
+                   connectionContainer[i].color = "green";
+               ////////////////////////  this.context.strokeStyle = "green";
+                }
+                else
+                {
+                    connectionContainer[i].color = "red";
+                    allCorrect = 0;
+                }
+            }
+
+                if(allCorrect == 0){
+                    alert("boooomm!!!!! \n check connections..")
+                }
+
+
+            drawAll()
+        
+            //interval = setInterval( drawOP,100);
+            
+        }
+
+        function drawAll()
+        {
+            //alert("before clear");
+            //context.clearRect(0, 0, canvas.width, canvas.height);
+            var t = 0        
+            // component drawing
+            if(componentContainer.length==0){
+                
+                temporary=0;
+            }
+            else{
+               
+                for (t = 0; t < componentContainer.length; t++)
+                    {
+                        componentContainer[t].component.draw();
+                    }
+                
+                    // connection drawing
+                    for(t = 0 ; t < connectionContainer.length ; t++)
+                    {
+                        //console.log("component draw wala i : " + i)
+                        
+                        connectionContainer[t].drawline(connectionContainer[t].color);                        
+                    }
+                //alert("after clear");
+            }
+        }
+
+        function changeKeyTo(val){
+    changeKey = val;
+}
+
+function clearLast() {
+            if(componentContainer.length>0 && undo[undo.length-1] == "component") {
+                if(componentContainer[componentContainer.length-1].component.type == "R1") {
+                    document.getElementById("b1").disabled = false;
+                    
+                }
+                if(componentContainer[componentContainer.length-1].component.type == "RF") {
+                    document.getElementById("b2").disabled = false;
+                }
+                if(componentContainer[componentContainer.length-1].component.type == "C") {
+                    document.getElementById("b3").disabled = false;
+                }
+                if(componentContainer[componentContainer.length-1].component.type == "OA") {
+                    document.getElementById("b5").disabled = false;
+                }
+                if(componentContainer[componentContainer.length-1].component.type == "G") {
+                    document.getElementById("b6").disabled = false;
+                }
+                if(componentContainer[componentContainer.length-1].component.type == "L") {
+                    document.getElementById("b7").disabled = false;
+                }
+                if(componentContainer[componentContainer.length-1].component.type == "CRO") {
+                    document.getElementById("b8").disabled = false;
+                }
+                if(componentContainer[componentContainer.length-1].component.type == "PS") {
+                    document.getElementById("b4").disabled = false;
+                }
+                componentContainer.length--;
+                console.log("component reduced");
+            }
+            if(connectionContainer.length>0 && undo[undo.length-1] == "connection") {
+                connectionContainer.length --;
+                pairContainer.length -- ;
+                //drawLineContainer.length -- ;
+                console.log("connection reduced");
+            }
+            undo.lenght=undo.length--;
+            context.clearRect(0,0,canvas.width,canvas.height);
+            console.log(componentContainer.length+" "+connectionContainer.length+" "+undo.length);
+            drawAll();
+        }
+
+        function clearCanvas(){
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            var poppedElement;
+            while(componentContainer.length>0){
+               poppedElement=componentContainer.pop();
+               document.getElementById(poppedElement.id).disabled=false;
+            }
+            while(connectionContainer.length!=0)
+                connectionContainer.pop();
+            /*while(drawLineContainer.length!=0){
+                drawLineContainer.pop();
+            }*/
+            while(pairContainer.length!=0){
+                pairContainer.pop();
+            }
+            while(flagStack.length!=0)
+                flagStack.pop();
+
+ //CROCHANGES////////////////////////////////
+             var datapointsSI1=[];
+                var datapointsSOP1=[];
+                var datapointsT1=[];
+               var datapointsTOP1=[];
+               var datapointsSQI=[];
+                 var datapointsSQOP1=[];
+
+                document.getElementById("line1").innerHTML="";
+                document.getElementById("line2").innerHTML="";
+                amp=Math.abs(amp);   
+ //////////INPUT VALUES
+                rfeed= undefined;
+                rval= undefined;
+                vinp= undefined;
+                freq= undefined;
+                vout= undefined;                                
+        }
+        
+        function clearConnection()
+        {
+            var again = 0;
+           
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            var t = 0        
+            // component drawing
+                for (t = 0; t < componentContainer.length; t++)
+                    {
+                        componentContainer[t].component.draw();
+                    }
+             connectionContainer = [];
+            // drawLineContainer = [];
+             pairContainer = [];
+             
+               
+        } 
+        
+        function checkOverlap(width0,height0,width1,height1){
+            console.log(width0,height0,width1,height1);
+            
+            for(var i=0;i<componentContainer.length;i++)    {
+                //console.log(componentContainer[i].width0,componentContainer[i].height0,componentContainer[i].width1,componentContainer.height1);
+                console.log(componentContainer[i].component.type,componentContainer[i].component.width0,componentContainer[i].component.height0,componentContainer[i].component.width1,componentContainer[i].component.height1);
+                if(componentContainer[i].component.width0 >= width0 && componentContainer[i].component.width0 <= width1)   {
+                    
+                    if(componentContainer[i].component.height0 >= height0 && componentContainer[i].component.height0 <= height1)  
+                        return (false);
+                    else if(componentContainer[i].component.height1 >= height0 && componentContainer[i].component.height1 <= height1)   
+                        return (false);
+                    else if(componentContainer[i].component.height0 <= height0 && componentContainer[i].component.height1 >= height1)   
+                        return (false);
+                    }
+                if(componentContainer[i].component.width1 >= width0 && componentContainer[i].component.width1 <= width1)   {
+                    if(componentContainer[i].component.height0 >= height0 && componentContainer[i].component.height0 <= height1)
+                        return (false);
+                    else if(componentContainer[i].component.height1 >= height0 && componentContainer[i].component.height1 <= height1)   
+                        return (false);
+                    else if(componentContainer[i].component.height0 <= height0 && componentContainer[i].component.height1 >= height1)   
+                        return (false);
+                }
+                if(componentContainer[i].component.width0 <= width0 && componentContainer[i].component.width1 >= width1)   {
+                    if(componentContainer[i].component.height0 >= height0 && componentContainer[i].component.height0 <= height1)
+                        return (false);
+                    else if(componentContainer[i].component.height1 = height0 && componentContainer[i].component.height1 <= height1)   
+                        return (false);
+                    else if(componentContainer[i].component.height0 <= height0 && componentContainer[i].component.height1 >= height1)   
+                        return (false);
+                }
+            }
+            return (true);
+        }
+        
+        var count;
+        var val = [];
+        var Gain = [];
+        var Vout = [];
+        function generate() {
+            var tableName = "tb1";
+            document.getElementById("tb1").style.display='block';
+            //document.getElementById("drawGraph").style.display='block';
+
+            cleartable(tableName);
+            inserttable(tableName);
+            graph()
+        }
+       function inserttable(tableName) {
+            var tb1 = document.getElementById(tableName);
+            var Lf = parseInt(document.getElementById("Lastfreq").value);
+            var If = parseInt(document.getElementById("Infreq").value);
+            var n = parseInt(document.getElementById("list1").value);
+            var gain1;
+            var num = ((Lf-If)/n)+1; //counts no. of rows in table
+            count=num;
+            
+            val[0]=Math.log10(If);
+			var cellid=1;
+            var finalvout=(rfeed/rval)*5;
+            for (i = 1; i <= num ; i++) {
+                var row = tb1.insertRow(-1);
+                val.push(Math.log10(If));
+                for(j=0;j<3;j++){
+                    console.log();
+                    var cell = row.insertCell(-1);
+                    var t1 = document.createElement("input");
+                    t1.type = "text";
+
+                    t1.id = "t" + cellid ; 
+					
+                    cell.appendChild(t1);
+                    //val.push(If+n);
+                    
+					
+                   
+					if(cellid%3==1){
+                        document.getElementById("t"+cellid).value=If;
+                        
+                    }
+						
+					if(cellid%3==2){
+                       // document.getElementById("t"+cellid).value=document.getElementById("t"+(cellid-1)).value*2;
+                        gain1=10000/(Math.sqrt(1+Math.pow((document.getElementById("t"+(cellid-1)).value)/freq,2))); //ideal freq =10000 for given input
+                        document.getElementById("t"+cellid).value=gain1;
+                        Gain.push(20*Math.log10(gain1));
+                    }
+						
+					if(cellid%3==0){
+                        document.getElementById("t"+cellid).value=document.getElementById("t"+(cellid-2).value)*3;
+                      //  Vout.push(document.getElementById("t"+(cellid-2)).value*3);
+                    }
+					
+					cellid++;
+					//alert("hi");
+					
+                    }
+                    If+=n;
+                }
+			}
+         function cleartable() {
+            var tb1 = document.getElementById("tb1");
+            while (tb1.rows.length > 1) {
+                tb1.deleteRow(1);
+            }
+        }
+
+         var datapoints1 = [];
+    
+        function graph(){
+        	var datapoints1 = [];
+        	
+        	for(i=0;i<count;i++){
+        		//datapoints1.push({ x:i/(360*text), y:v* Math.sin(i * Math.PI /180) });
+                
+                //console.log(val[i]);
+                var freqgraph = val.pop();
+                var voutgraph = Gain.pop();
+                ///console.log(freqgraph);
+                //console.log(voutgraph);
+
+               
+                datapoints1.push({x:freqgraph,y:voutgraph});
+        	}
+            document.getElementById("l1").style.display ="block"
+            graphline("l1", datapoints1, "Freq", "Gain");
+        }
+
+//CROchanges
+
+function drawOP()
+                {
+                    for(i=0;i<componentContainer.length;i++)
+                    { 
+                       
+
+                        if(componentContainer[i].component.type == "CRO")
+                            
+			
+		    		    time = time + 0.2;
+				   
+                        context.clearRect(componentContainer[i].component.x6,componentContainer[i].component.y6, 120,29);
+                       // console.log("x5 = " + componentContainer[i].component.x6);
+				
+			        	context.beginPath();
+				        for(d = 0; d <= 120; d++) 
+				        {
+                        //context.beginPath();
+                        context.strokeStyle = "blue";
+                        context.lineTo(componentContainer[i].component.x6 + d,componentContainer[i].component.y6+15 - (Math.cos(time + d * 0.5) *10 ));
+                       
+                        //
+                        }
+                     //   context.closePath();           
+                        context.stroke();
+                        context.closePath();
+                       if(d>=120) {
+                           context.moveTo(componentContainer[i].component.x6+5,componentContainer[i].component.y6 +40);
+                       }
+                    }           
+			
+                    if(time > 500)
+                    {
+                      
+                        clearInterval(interval);
+                    }
+                }
+
+function drawIP()
+                {    
+                    for(i=0;i<componentContainer.length;i++)
+                    { 
+
+                       // context.strokeStyle = "green";
+                        if(componentContainer[i].component.type == "CRO")
+                            
+			
+		    		    time = time + 0.2;
+				   
+                        context.clearRect(componentContainer[i].component.x6,componentContainer[i].component.y6 + 29, 120, 30);
+                       // console.log("x5 = " + componentContainer[i].component.x6);
+				
+			        	context.beginPath();
+                        for(d = 0; d <= 120; d++) 
+				        {
+                        //context.beginPath();
+                        context.strokeStyle="green";
+                        context.lineTo(componentContainer[i].component.x6 + d,componentContainer[i].component.y6+21+20 - (Math.sin(time + d * 0.3) *10 ));
+                       // context.closePath();
+                        }
+
+                        context.moveTo(componentContainer.x6,componentContainer.y6+15);
+                      
+                        context.stroke();   
+                       // context.closePath();                     
+                    }           
+                    context.closePath();
+                    if(time > 500)
+                    {
+                      
+                        clearInterval(interval1);
+                    }
+                }
+
+function Square_Input_for_inverter()
+    {   var datapointsSQI=[];
+        var datapointsSQOP1=[];
+        for(t=0;t<T*2*3;t+=2*T)
+        {
+        datapointsSQI.push({x: t ,y: 0});
+        datapointsSQI.push({x: t ,y: amp});
+        datapointsSQI.push({x: t+T ,y: amp});
+        datapointsSQI.push({x: t+T ,y: 0});
+        datapointsSQI.push({x: t+T ,y: -amp});
+        datapointsSQI.push({x: t+2*T ,y: -amp});
+        datapointsSQI.push({x: t+2*T ,y: 0});
+        }
+    
+        graphline("line1",datapointsSQI,"Time(sec)", "Input Voltage(V)");
+
+        amp=-amp;
+
+        for(t=0;t<T*2*3;t+=2*T)
+        {
+        datapointsSQOP1.push({x: t ,y: 0});
+        datapointsSQOP1.push({x: t ,y: -vout});
+        datapointsSQOP1.push({x: t+T ,y: -vout});
+        datapointsSQOP1.push({x: t+T ,y: 0});
+        datapointsSQOP1.push({x: t+T ,y: vout});
+        datapointsSQOP1.push({x: t+2*T ,y: vout});
+        datapointsSQOP1.push({x: t+2*T ,y: 0});
+        }
+
+        graphline("line2",datapointsSQOP1,"Time(sec)", "Output Voltage(V)");
+
+}
+
+function Sine_Input_for_inverter()
+{
+    var datapointsSI1=[];
+    var datapointsSOP1=[];
+
+
+    for(i=0;i<=2/freq;i+=1/(400*freq))
+        	{
+        		datapointsSI1.push({ x: i, y: vinp*Math.sin(Math.PI*2*freq*i) });
+            }
+      /* for(i=0;i<=360*2;i++)
+        	{  
+        		datapointsSI1.push({ x:i*2*T/(360), y:amp* Math.sin(i * Math.PI /180) });
+        	}*/
+               graphline("line1", datapointsSI1, "Time(sec)", "Input Voltage(V)");
+
+          
+
+              /* for(i=0;i<=360*2;i++)
+        	{
+        		datapointsSOP1.push({ x:i*2*T/(360), y: vout* Math.sin(i * Math.PI /180) });
+        	}*/
+            for(i=0;i<=2/freq;i+=1/(400*freq))
+        	{
+                if(vout*Math.sin(Math.PI*2*freq*i)  > opSat){
+                    datapointsSOP1.push({ x: i, y: opSat });
+                }
+                else if(vout*Math.sin(Math.PI*2*freq*i)  < -opSat){
+                    datapointsSOP1.push({ x: i, y: -opSat });
+                }
+                else{
+        		datapointsSOP1.push({ x: i, y: vout*Math.sin(Math.PI*2*freq*i) });
+                }
+            }
+               graphline("line2", datapointsSOP1, "Time(sec)", "Output Voltage(V)");
+
+}
+ //Triangular Wave    
+ function Triangular_Input_For_inverter()
+ {      var datapointsT1=[];
+        var datapointsTOP1=[];
+              for(t=0;t<2*3*T;t+=2*T)
+                {
+                datapointsT1.push({x: t ,y: 0});
+                datapointsT1.push({x: t+T/2 ,y: amp});
+                datapointsT1.push({x: t+T ,y: 0});
+                datapointsT1.push({x: t+T+T/2 ,y: -amp});
+                datapointsT1.push({x: t+2*T ,y: 0})
+                }
+
+               graphline("line1",datapointsT1,"Time(sec)", "Input Voltage(V)");
+
+//Triangular InvO
+       amp=-amp;
+
+    for(t=0;t<T*2*3;t+=2*T)
+        {
+        datapointsTOP1.push({x: t ,y: 0});
+        datapointsTOP1.push({x: t+T/2 ,y: -amp*gain});
+        datapointsTOP1.push({x: t+T ,y: 0});
+        datapointsTOP1.push({x: t+T+T/2 ,y: amp*gain});
+        datapointsTOP1.push({x: t+2*T ,y: 0})
+        }
+
+   graphline("line2",datapointsTOP1,"Time(sec)", "Output Voltage(V)");
+}
+
+function freqResponse(){
+            document.getElementById("newTable").style.display='block'
+        }
+
+        var croConnected1=0;
+        var croConnected2=0;
+
+                // check connections --> red and green
+                // if all greeen, all components placed and cro connected to right pins, show value, animation and enable click button
+                // if not and click button pressed, alert("check connections").                
+                //on simulation off connections blue and hide value, animation on cro and disable click button
+
+        var tempKey;
+ 
+    function simStart()
+        {
+            context.clearRect(0,0,canvas.width,canvas.height);
+
+           if(document.getElementById("myonoffswitch").checked == true)
+            {   
+            
+            tempKey = changeKey;
+            changeKey = -1;
+
+            // make connections red green
+            check();
+
+            // if no red connections
+            if(allCorrect == 1){
+
+            // ip signal connected to cro --> show ip animation
+            for(i=0; i<pairContainer.length; i++)
+            { 
+                if((pairContainer[i][0] == 10 &&  pairContainer[i][1] == 16) || (pairContainer[i][0] == 16 &&  pairContainer[i][1] == 10) )
+                        {
+                       //c1=1;
+                            console.log("load to cro pin 1")
+                        context.beginPath();
+                        interval = setInterval( drawOP,100);
+                        context.closePath();    
+                       
+                        croConnected1=1;
+                            break;
+                    }
+                
+            }
+            
+            //op connected to CRO --> show op animation
+            for(i=0; i<pairContainer.length; i++)
+            { 
+                if((pairContainer[i][0] == 15 &&  pairContainer[i][1] == 13) || (pairContainer[i][0] == 13 &&  pairContainer[i][1] == 15) )
+                        {
+            // if cro connected to op, show op wave
+                    
+                        console.log("signal to cro pin 2")
+                        croConnected2 = 1;
+                        
+                        context.beginPath();
+                        interval1 = setInterval( drawIP,100);
+                        context.closePath();    
+                        
+                        break;
+                        }                    
+            }
+                        // refresh value on cro
+            for(i=0;i<componentContainer.length;i++)  
+                    { 
+
+                        if(componentContainer[i].component.type == "CRO")				   
+                            {
+
+                                
+                                
+                                    //componentContainer[i].component.value = Math.round(vout) + " Volts"                            
+                                
+                                    if(!isNaN(vout)&& vout>opSat )
+                                    {
+                                        componentContainer[i].component.value = Math.round(opSat) + " Volts";
+                                    }
+                                    else if(!isNaN(vout)&& vout< -opSat)
+                                    {
+                                        componentContainer[i].component.value = Math.round(-opSat) + " Volts";
+                                    }
+                                    else{componentContainer[i].component.value = 0 + " Volts";}
+                        }
+                    }   
+            }
+            else{alert("check connections")}
+            context.clearRect(0,0,canvas.width,canvas.height);
+            drawAll();
+            //cover buttons
+                var coverHeight = 0;
+                    simCoverTime = setInterval( function(){
+                    document.getElementById("controlsCover").style.height = coverHeight + "px";
+                    coverHeight += 10
+                
+                    document.getElementById("coverLable").innerText = "Simulation Running...";
+
+                    if(coverHeight > 420){
+                        clearInterval(simCoverTime);
+                                              //alert("stop")
+                    }
+                },10);                             
+            }
+           else if(document.getElementById("myonoffswitch").checked == false)
+            {
+                changeKey = tempKey;
+                for(i=0; i<pairContainer.length; i++)
+            { 
+                      //var correct = false;
+                      //console.log(pairContainer[0][0]+"And"+pairContainer[0][1]);
+                for(j=0; j<correctContainer.length; j++)
+                {
+                    //var c1=0;
+                    connectionContainer[i].color = "blue";
+                    
+                    //break;
+                }
+                
+            }
+            changeKey= -1
+            
+
+            if(croConnected1 == 1){
+            clearInterval(interval);
+            //clearInterval(interval1);
+            }
+            
+            if(croConnected2 == 1){
+            //clearInterval(interval);
+            clearInterval(interval1);
+            }
+
+            for(i=0;i<componentContainer.length;i++)
+                    { 
+
+                        if(componentContainer[i].component.type == "CRO")				   
+                            {
+                                context.clearRect(componentContainer[i].component.x6,componentContainer[i].component.y6, 120, 60);
+                                context.clearRect(componentContainer[i].component.x5,componentContainer[i].component.y5+65,120,40);
+                                componentContainer[i].component.value = "OFF";
+                            }
+                    }
+
+
+                var coverHeight = 420;
+                simCoverTime = setInterval( function(){
+                    document.getElementById("controlsCover").style.height = coverHeight + "px";
+                    coverHeight -= 10
+                    document.getElementById("coverLable").innerText = "";
+                    if(coverHeight < 0){
+                        clearInterval(simCoverTime);
+                        //alert("stop")
+                    }
+                },10);                
+                
+                drawAll();
+                //alert("simulation stoped");
+            }
+        }
+
+
+
+
+    </script>
+        <script src="../../src/lineOverlap.js"></script>
+
+    <script src="../../src/graph.ob.js"></script>
+    <script src="../../src/graph_line_use.ob.js"></script>
+    <script src="../../src/mouseevent.ob.js"></script>
+   
+</body>
+</html>

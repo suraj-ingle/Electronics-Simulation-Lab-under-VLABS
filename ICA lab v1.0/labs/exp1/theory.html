@@ -1,0 +1,270 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title> Virtual Labs </title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <!-- Bootstrap 3.3.6 -->
+        <link rel="stylesheet" href="../../bootstrap/css/bootstrap.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="../../dist/css/AdminLTE.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+        <script>
+            window.onload = function () {
+                document.getElementById("theory").className = "active treeview";
+            }
+        </script>
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+        <!--Navigation Bar-->
+<div class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://iitb.ac.in"><span><img src="../../images/iitb_logo_30dpi.png"></span></a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/">HOME</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/labs/labs.html">LABS</a>
+        </li>
+        <!--<li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/Syllabus_Matrix/syllabus.html">SYLLABUS</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/L1-Form/idea.php">CONTRIBUTE</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/vlab_tool/index.php ">LAB TOOL</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/wiki/doku.php">WIKI</a>
+        </li> -->
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/gitlab/">GITLAB</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+        <div class="wrapper">
+        	<header class="main-header">
+        <!-- Logo -->
+        <a href="../index.html" class="logo">
+        <p align="center" style="font-size:1em;"><b>Integrated Circuits Lab</b></p>
+    </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+          <section class="content-header">
+            <ol class="breadcrumb">
+              <li>
+                <a href="../index.html"><i class="fa fa-dashboard"></i>Integrated Circuits Lab</a>
+              </li>
+              <li>
+                <a href="#">Inverting Amplifier</a>
+              </li>
+              <li class="active">Theory</li>
+            </ol>
+          </section>
+        </nav>
+      </header>
+
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- search form -->
+          <form action="#" method="get" class="sidebar-form">
+            <div class="input-group"></div>
+          </form>
+          <!-- /.sear ch form -->
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li class="treeview" id="aim">
+                    <a href="index.html">
+                        <i class="fa fa-files-o"></i> <span>Aim</span>
+
+                    </a>
+                </li>
+                <li class="treeview" id="theory">
+                    <a href="theory.html" >
+                        <i class="fa fa-files-o"></i>
+                        <span>Theory</span>
+                    </a>
+                </li>
+               <!--<li class="treeview" id="numerical">
+                    <a href="n.html">
+                        <i class="fa fa-laptop"></i>
+                        <span>Numerical</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                 <li class="treeview" id="program">
+                    <a href="program.php">
+                        <i class="fa fa-laptop"></i>
+                        <span>Program</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li> -->
+                <li class="treeview" id="pretest">
+                    <a href="pretest.html">
+                        <i class="fa fa-files-o"></i> <span>Pre Test</span>
+
+                    </a>
+                </li>
+
+                <li class="treeview" id="procedure">
+                    <a href="procedure.html">
+                        <i class="fa fa-files-o"></i> <span>Procedure</span>
+                    </a>
+                </li>
+                <li class="treeview" id="simulation">
+                    <a href="simulation.html">
+                        <i class="fa fa-laptop"></i>
+                        <span>Simulation</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                <!--
+               <li class="treeview" id="program">
+                    <a href="result.html">
+                        <i class="fa fa-laptop"></i>
+                        <span>Result</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>-->
+
+                <li class="treeview" id="posttest">
+                    <a href=" posttest.html">
+                        <i class=" fa fa-files-o">
+                    </i>
+                    <span>Post Test</span>
+                    <span class="pull-right-container">
+                    </span>
+                    </a>
+                </li>
+                <li class="treeview" id="ref">
+                    <a href="references.html">
+                        <i class="fa fa-files-o"></i>
+                        <span>References</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+
+            <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+                <section class="content-header">
+                <h1 align="center">
+                  Inverting Amplifier <!-- Write experiment name here -->
+                </h1>
+                </section>
+                    <!-- Main content -->
+                    <section class="content">
+                    <h3 style="margin-top:5%"> Theory </h3>
+                    <p style="font-size:130%; margin-top:2%">
+                      Operational amplifier called as Op-amp is a device used to amplify dc as well as ac input signals. 
+                      An Op-amp basically is a direct-coupled high gain amplifier that is constructed from one or more differential
+                       amplifiers followed by a level translator and an output stage. All these circuits are integrated together in
+                        the form of 8 pin IC. μA 741 and OP 07 are the most commonly used ICs in the laboratory. The standard supply
+                         voltages required for linear Op-amp are ± 15 V whereas digital ICs require only one power supply. Op-amp is
+                          basically designed to perform mathematical operations such as addition, subtraction, multiplication and integration.
+                           Hence the name operational amplifier. Op-amp serves as a basic building block in a variety of day to day 
+                           applications such as amplifiers, active filters, oscillators, comparators and others.
+
+                       The schematic symbol of an Op-amp (with supply connections) is shown below:
+                    </br></br>
+                      <img style="max-width: 500px;" src="Fig1.png" class="center">
+                    </br></br>
+                      The characteristics of an ideal Op-amp are listed below:</br>
+                      1. Infinite input voltage gain.</br>
+                      2. Infinite input resistance.</br>
+                      3. Zero output resistance.</br>
+                      4. Zero output voltage.</br>
+                      5. Infinite bandwidth.</br>
+                      6. Infinite common-mode rejection ratio.</br>
+                      7. Infinite slew rate.</br>
+                      Op-amps can be used in either of the three open-loop configurations viz. Differential, Inverting & Non-inverting. But the output of open-loop Op-amp is either positive saturation or negative saturation, which is undesirable in linear applications. Introducing negative feedback to the input stabilizes the gain but to a value lesser than the open-loop gain. Introducing positive feedback is necessary in oscillator design.
+                      </br>
+                      There are four ways of implementing closed-loop configurations viz. voltage series, voltage shunt, current series and current shunt. Either voltage or current is fed back to the input in series or parallel.
+                      Voltage-shunt feedback and voltage-series feedback configurations are called as inverting and non-inverting amplifiers respectively. 
+                      In inverting amplifier configuration the input is given to the inverting terminal, hence the output obtained is inverted i.e. 1800 out of phase with the applied input.
+                      In case of non-inverting amplifier, the input is applied to the non-inverting input. The output and input are in phase. The input resistance of an inverting amplifier is smaller as it depends on the series resistance connected to the input- signal-source.
+                      The inverting amplifier (voltage-shunt feedback amplifier) configuration is shown below.</br>
+                      </br><img style="max-width: 500px;"src="Fig2.png" class="center"></br></br>
+                      In the circuit above, the non-inverting input is grounded and the input signal is applied to the inverting terminal 
+                      via resistor R1. Considering the characteristics of ideal amplifier, the voltage at inverting terminal is approximately 
+                      equal to that at the non-inverting terminal i.e. the inverting terminal is at approximately ground potential. 
+                      Therefore the inverting terminal is said to be at <i>virtual ground.</i> The virtual ground concept simplifies the analysis
+                      of Op-amp circuits.
+                      </br>
+                      </br>
+                      Applying Kirchhoff's current law at input node and concept of virtual ground, the closed loop voltage gain can be derived.</br> The closed loop gains</br>  
+                      </br>A<sub>f</sub>=v<sub>o</sub>/v<sub>i</sub>= -R<sub>f</sub>/R<sub>1</sub>  (ideal expression for gain)</br>
+                      </br>and</br>
+                      </br>A<sub>f</sub>=v<sub>o</sub>/v<sub>i</sub>= -AR<sub>f</sub>/(R<sub>1</sub>+R<sub>f</sub>+Ar1)  (exact expression for gain)</br>
+                      </br>
+
+                      Applying Miller's theorem the input resistance with feedback can be derived to give an expression:</br>
+                    </br>R<sub>iF</sub>=R<sub>1</sub>+(R<sub>f</sub>/(1+A))in parallel with Ri (exact expression)</br>
+                  </br>R<sub>iF</sub>=R<sub>1</sub>  (ideal expression)</br>
+                      Applying Thevenin's theorem, the output resistance with feedback Rof can be derived as</br>
+                </br>R<sub>of</sub>=R<sub>o</sub>/(1+AB)</br>
+                </br>Where Ro is the output resistance of the Op-amp, A is the open-loop voltage gain of the Op-amp and B is the gain of the feedback circuit.
+                      Bandwidth of an amplifier is defined as the range of frequencies for which the gain remains constant. For an Op-amp with single break frequency fo, the gain-bandwidth product is constant, and equal to the unity- gain bandwidth (UGB). As gain with feedback is always less than the gain without feedback, the bandwidth of the amplifier with feedback would be obviously greater than without feedback.</br>
+              </br>f<sub>F</sub> = f<sub>0</sub> (1 + AB)</br>
+              </br>By varying the frequency of the ac input signal for a fixed input signal, the output voltage can be measured using an oscilloscope. The bandwidth of the amplifier can be measured from this frequency response.</br>
+                     
+  <!--Theory of experiment -->
+                    </p>
+                </section>
+            <!-- /.content -->
+            </div>
+            <footer class="main-footer">
+                <h4 align="center">Lab contributed by PVG's COET, Pune-09. <!-- Institute Name --> </h4>
+            </footer>
+        </div>
+
+    </body>
+</html>
+
+<!-- ./wrapper -->
+<!-- jQuery 2.2.3 -->
+<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/app.min.js"></script>

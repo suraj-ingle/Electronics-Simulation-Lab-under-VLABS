@@ -1,0 +1,15 @@
+﻿
+
+table {
+    border-collapse: collapse;
+}
+
+table, td, th {
+    border: 2px solid green;
+    
+}
+h1{
+    text-align:center ;
+    width:100%;
+}
+

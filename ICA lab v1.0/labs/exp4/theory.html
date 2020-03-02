@@ -1,0 +1,269 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title> Virtual Labs </title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <!-- Bootstrap 3.3.6 -->
+        <link rel="stylesheet" href="../../bootstrap/css/bootstrap.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="../../dist/css/AdminLTE.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+        <script>
+            window.onload = function () {
+                document.getElementById("theory").className = "active treeview";
+            }
+        </script>
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+        <!--Navigation Bar-->
+<div class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://iitb.ac.in"><span><img src="../../images/iitb_logo_30dpi.png"></span></a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/">HOME</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/labs/labs.html">LABS</a>
+        </li>
+        <!--<li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/Syllabus_Matrix/syllabus.html">SYLLABUS</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/L1-Form/idea.php">CONTRIBUTE</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/vlab_tool/index.php ">LAB TOOL</a>
+        </li>
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/vlabs-dev/wiki/doku.php">WIKI</a>
+        </li> -->
+        <li class="active">
+          <a href="http://vlabs.iitb.ac.in/gitlab/">GITLAB</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+        <div class="wrapper">
+        	<header class="main-header">
+        <!-- Logo -->
+        <a href="../index.html" class="logo">
+        <p align="center" style="font-size:1em;"><b>Integrated Circuits Lab</b></p>
+    </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+          <section class="content-header">
+            <ol class="breadcrumb">
+              <li>
+                <a href="../index.html"><i class="fa fa-dashboard"></i>Integrated Circuits Lab</a>
+              </li>
+              <li>
+                <a href="#">Differentiator Circuit</a>
+              </li>
+              <li class="active">Theory</li>
+            </ol>
+          </section>
+        </nav>
+      </header>
+
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- search form -->
+          <form action="#" method="get" class="sidebar-form">
+            <div class="input-group"></div>
+          </form>
+          <!-- /.sear ch form -->
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li class="treeview" id="aim">
+                    <a href="index.html">
+                        <i class="fa fa-files-o"></i> <span>Aim</span>
+
+                    </a>
+                </li>
+                <li class="treeview" id="theory">
+                    <a href="theory.html" >
+                        <i class="fa fa-files-o"></i>
+                        <span>Theory</span>
+                    </a>
+                </li>
+               <!--<li class="treeview" id="numerical">
+                    <a href="n.html">
+                        <i class="fa fa-laptop"></i>
+                        <span>Numerical</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                -- <li class="treeview" id="program">
+                    <a href="program.php">
+                        <i class="fa fa-laptop"></i>
+                        <span>Program</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li> -->
+                <li class="treeview" id="pretest">
+                    <a href="pretest.html">
+                        <i class="fa fa-files-o"></i> <span>Pre Test</span>
+
+                    </a>
+                </li>
+
+                <li class="treeview" id="procedure">
+                    <a href="procedure.html">
+                        <i class="fa fa-files-o"></i> <span>Procedure</span>
+                    </a>
+                </li>
+                <li class="treeview" id="simulation">
+                    <a href="simulation.html">
+                        <i class="fa fa-laptop"></i>
+                        <span>Simulation</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+
+               <!--<li class="treeview" id="program">
+                    <a href="result.html">
+                        <i class="fa fa-laptop"></i>
+                        <span>Result</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li><!-->
+
+                <li class="treeview" id="posttest">
+                    <a href=" posttest.html">
+                        <i class=" fa fa-files-o">
+                    </i>
+                    <span>Post Test</span>
+                    <span class="pull-right-container">
+                    </span>
+                    </a>
+                </li>
+                <li class="treeview" id="ref">
+                    <a href="references.html">
+                        <i class="fa fa-files-o"></i>
+                        <span>References</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+
+            <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+                <section class="content-header">
+                <h1 align="center">
+                  Differentiator Circuit <!-- Write experiment name here -->
+                </h1>
+                </section>
+                    <!-- Main content -->
+                    <section class="content">
+                    <h3 style="margin-top:5%"> Theory </h3>
+                    <p style="font-size:130%; margin-top:2%">
+
+                      
+                      A simple differentiator circuit is obtained by interchanging the position of the resistor and capacitor in the basic integrator circuit. The ideal performance equation for the simple differentiator is readily derived from the usual ideal amplifier assumptions. Since the input signal is applied through a capacitor there is current flow to the amplifier summing point and a nonzero output voltage only when the input voltage changes. </br>
+                      <img src="Diagram.png" class="center"></br>
+                      Assume current 'I' is flowing through capacitor C. It is given as</br>
+
+                      <img src="Formula1.png" class="center"></br>
+                      Since input current to the op-amp is zero, same current 'I' flows through resistance R as shown. It is given by</br>
+                      <img src="Formula2.png" class="center"></br>
+                      Equating both the above equations of 'I' we get,</br>
+                      <img src="Formula3.png" class="center"></br>
+                      Thus, output voltage is nothing but time differentiation of the input signal and hence acting as differentiator. Here 'RC' is the time constant of the differentiator.</br>
+                      Now let us see what is the response of the differentiator to the different types of input signals.</br>
+                      1)Vin = Step signal</br>
+                      The step signal is defined as follows</br>
+                      Vin (t)=A for t>0</br>
+                      Let the product RC = 1.</br>
+                      The output voltage is given as</br>
+                      <img src="Formula4.png" class="center"></br>
+                      Practically the step input is taking some finite time to rise from 0 to magnitude A. Due to this small interval of time, the differentiator output is not zero; but appears in the form of spikes at t = 0. The input and output waveform is shown below.</br>
+                      <img src="Graph1.png" class="center"></br>
+                      2)Vin = Square Wave
+                      The square wave is nothing but combination of positive and negative step signals. As seen in first case, the output of step signal is a spike. For positive step signal, a negative spike is obtained because it is inverting differentiator. Thus, for a square wave input, the output obtained is a spike waveform as shown in figure below.</br>
+                      <img src="Graph2.png" class="center"></br>
+                      3)Vin = Sine Wave</br>
+                        Let Vin=Vm sinωt</br>
+                        <img src="Formula5.png" class="center"></br>
+                        Assuming the time constant RC = 1 and taking the differentiation, we get</br>
+                        <img src="Formula6.png" class="center"></br>
+                        <img src="Graph3.png" class="center"></br>
+                        Frequency Response of ideal integrator:</br>
+                        The voltage gain for the same is given as</br>
+                        <img src="Formula7.png" class="center"></br>
+                        The magnitude of gain A is |A|=|2πfRC|</br>
+                        Thus, the gain A is directly proportional to frequency f.
+                        At low frequency, the gain is also low. As frequency increases, gain also increases linearly at the rate of 20dB/decade. For dc input (f = 0) the gain is zero.
+                        Let, the frequency fa is defined as follows</br>
+                        fa=1/2πRC</br>
+                        Therefore the gain A is given as</br>
+                        |A|=|f/fa |</br>
+                        Thus When f < fa, the gain A is less than 1( i.e. negative)
+                        When f = fa, then the gain is 1 (i.e. 0dB)</br>
+                        Thus the frequency fa is nothing but the 0 dB (or unity gain) frequency for differentiator.
+                        When f > fa, the gain A is increases linearly at the rate of 20dB/decade.
+                        The frequency response of ideal differentiator is shown in figure below.</br>
+                        <img src="Graph4.png" class="center"></br>
+                        <h4>Disadvantages of ideal differentiator:</h4>></br>
+                        The reactance of the capacitor Xc is given as Xc=1/2πfC</br>
+                        As frequency increases, Xc reduces i.e. Capacitor draws more current from input source. Thus, at high frequency input source gets loaded by capacitor C. Therefore, noise signals at higher frequency gets amplified and appeared at output. So, to avoid the mis-amplification of the signal the ideal differentiator is modified and referred as practical differentiator or compensated differentiator.</br>
+
+                  
+  <!--Theory of experiment -->
+                    </p>
+                </section>
+            <!-- /.content -->
+            </div>
+            <footer class="main-footer">
+                <h4 align="center">Lab contributed by PVG's COET, Pune-09. <!-- Institute Name --> </h4>
+            </footer>
+        </div>
+
+    </body>
+</html>
+
+<!-- ./wrapper -->
+<!-- jQuery 2.2.3 -->
+<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/app.min.js"></script>

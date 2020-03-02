@@ -1,0 +1,1322 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="sketch.js"></script>
+    <link href="simstyle.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+    <!--
+    <button onclick="document.getElementById('divforue').style.display='block'">Click for Q&A</button>
+    -->
+    <div id="tasks" style="border: solid;width:1065px;">
+        <h3>Task:</h3>
+        <h3>
+            An amplifier has input resistance R1 equal to 10 KΩ.
+            </br>1. What value of resistor Rf should be chosen so that the gain of the amplifier G = -10?
+            </br>2. Connect the circuit for input V1 = 1 volt and the components selected in part 1.
+            </br>3. Calculate the output voltage and the current flowing through the feedback resistor and verify with
+            the simulation results.
+        </h3>
+    </div>
+
+
+    <div id="simContainer" style="display:flex ">
+
+        <canvas id="mycanvas" width="850" height="504" onmousemove="mouseOverCanv(event)"></canvas>
+
+        <br>
+        <div id="controls" height="520"
+            style="border: double;border-color: rgba(32, 11, 5, 0.986); background-color:#696464">
+
+
+            <lable>INPUT TYPE:</lable>
+            <select id="b4" class="control" onchange="changeKeyTo(3);">
+                <option class="s">--SELECT TYPE</option>
+                <option class="s" value="1">Sinusoidal</option>
+                <option class="s" value="2">Square</option>
+                <option class="s" value="3">Triangular</option>
+            </select>
+
+            <lable>OP-AMP:</lable>
+            <select id="b5" class="control" onchange="changeKeyTo(4);" value="this.value">
+                <option class="s">--SELECT OPAMP VOLTAGE</option>
+                <option class="s" value="15">+15V & -15V Vsat</option>
+                <option class="s" value="12">+12V & -12V Vsat</option>
+            </select>
+
+            <select id="list0" class="control" onchange="changeKeyTo(this.value);">
+                <option id="b10" value="10">--SELECT COMPONENT </option>
+                <option id="b1" class="b" value="0">Resistor</option>
+                <option id="b2" class="b" value="1">Feedback Resistor</option>
+                <option id="b11" class="b" value="10">Gain Resistor</option>
+                <option id="b9" class="b" value="9">Potentiometer</option>
+                <option id="b3" class="b" value="2">Capacitor</option>
+                <option id="b6" class="b" value="5">Ground</option>
+                <option id="b7" class="b" value="6">Load</option>
+            </select>
+            <div id="potValContainer">
+
+            </div>
+
+            <input type="button" value="CRO" class="b" id="b8" onclick="changeKeyTo(7);" />
+
+
+            <input type="button" id="connectButton" class="control s" onclick="changeKeyTo(8);" value="Connect" />
+
+            <input type="button" value="Clear Connections" class="control s" onclick="clearConnection();" />
+
+            <input type="button" id="undo" class="control s" onclick="clearLast();" value="Undo" />
+
+            <input type="button" id="clearBtn" class="control s" onclick="clearCanvas();" value="clear" />
+
+            <input type="button" id="move" onclick="movec();clearConnection();" value="Move" /><br>
+
+            <input type="button" value="frequency Response" onclick="freqResponse();">
+
+
+            <br>
+            <div class="onoffswitch">
+                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch"
+                    onchange="simStart()">
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
+
+            <div id="controlsCover">
+
+                <lable style="top: 209px;position: relative;" id="coverLable"></lable>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <div id="nodes"></div>
+
+    <div id="croOP">
+        <div id="line1" class="croGraphs"></div>
+        <div id="line2" class="croGraphs"></div>
+
+        <button id="closeGraph" onclick="document.getElementById('croOP').style.display = 'none'; ">&times;</button>
+    </div>
+
+
+    <!--<input type="button" value="frequency Response" onclick="freqResponse();"> -->
+
+    <div id="newTable" style="display:none">
+        <div>
+            <input type="text" id="Infreq" placeholder="Initial Frequency">
+            <input type="text" id="Lastfreq" placeholder="Last Frequency">
+
+
+            <select name="list1" id="list1" onchange="generate();">
+                <option>Select the Interval</option>
+                <option value="50">Fifty</option>
+                <option value="100">Hundred</option>
+                <option value="200">Two Hundred</option>
+            </select>
+
+            <table id="tb1" border="1">
+                <tr>
+                    <th>Frequency</th>
+                    <th>Gain</th>
+                    <th>V<sub>Out<sub></th>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <!--
+                <label><strong></strong>CRO INPUT & OUTPUT SCREEN:</label></strong></label>   
+                    <div id="line1" style="width:360px;height:360px"></div>
+                    <div id="line2" style="width:360px;height:360px"></div>
+                    <input type="button" id="drawGraph" value="DRAW GRAPH" onclick="graph();"/> 
+             -->
+            <div id="l1"></div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script>
+
+        var canvas = document.getElementById("mycanvas");
+        var context = canvas.getContext("2d");
+        var pixel = 10
+        var ghostAlpha = 0.2
+        var overlapEnabled = true
+
+        var changeKey = -1;
+        var componentContainer = [];
+        //var drawLineContainer = [];  // x1,y1,x2,y2 collection 
+        var connectionContainer = []
+        var pairContainer = [];       // connected pin number collection
+        var pair = [];
+        // inverting amplifier
+        var correctContainer = [[16, 10, 0], [9, 12, 7, 14, 17], [1, 6, 2], [3, 13, 8, 15]];
+
+        var storei = 0;
+        var start1 = 0;
+        var dragFlag = -1;
+        var moveFlag = 0;
+        var do_not_draw = false;
+        var r1;
+        var r2;
+        var r3;
+
+        var comp1ID = -1;
+        var comp2ID = -1;
+        var x1;
+        var y1;
+        var x2;
+        var y2;
+        var pin1 = "";
+        var pin2 = "";
+
+        var rval = 0;
+        var opSat;
+        var rfeed = 0;
+        var vinp = 0;
+        var gain = 0;
+        var vout = 0;
+
+        var vinFlag = false;
+        var gainFlag = false;
+        var freq;
+        var flagStack = [];
+        var flag2 = 0;
+        var temp = 0;
+        var temporary = 0;
+
+        //CROCHANGES
+        var oscValue = ""; //document.getElementById("textVout").value
+        var time = 0;
+        var list_value;
+        var T;
+        var amp;
+        var undo = [];
+
+        var simCoverTime;
+        var nodeBoard = document.getElementById("nodes")
+
+        function mouseOverCanv(evt) {
+            var rect = canvas.getBoundingClientRect();
+
+            var x = evt.clientX - rect.left
+            var y = evt.clientY - rect.top
+            x = Math.floor(x / pixel) * pixel
+            y = Math.floor(y / pixel) * pixel
+
+            if (dragFlag == 1 && moveFlag == 2) {                       // move component 
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (componentContainer[temp].component.type == "R1") {
+                    if (checkOverlap(x, y, 20 * 4, 20 * 3, componentContainer[temp])) {
+
+                        var tempComponent = new r11(canvas, x, y);
+                        tempComponent.value = componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+                }
+                else if (componentContainer[temp].component.type == "RF") {
+                    /*
+                    var tempComponent = new rf(canvas, x, y);
+                    tempComponent.value = componentContainer[temp].component.value;
+                    componentContainer[temp].component = tempComponent;
+                    tempComponent.draw();
+                    */
+                    if (checkOverlap(x, y, 20 * 4, 20 * 3, componentContainer[temp])) {
+
+                        var tempComponent = new rf(canvas, x, y);
+                        tempComponent.value = componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+
+                }
+                else if (componentContainer[temp].component.type == "POT") {
+                    if (checkOverlap(x, y, 20 * 4, 20 * 3, componentContainer[temp])) {
+
+                        var tempComponent = new pot(canvas, x, y);
+                        tempComponent.value = componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+
+                }
+                else if (componentContainer[temp].component.type == "C") {
+                    if (checkOverlap(x, y, 20 * 3, 20 * 3, componentContainer[temp])) {
+
+                        var tempComponent = new c(canvas, x, y);
+                        tempComponent.value = componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+                }
+                else if (componentContainer[temp].component.type == "OA") {
+                    if (checkOverlap(x, y, 20 * 5, 20 * 4, componentContainer[temp])) {
+
+                        var tempComponent = new op(canvas, x, y);
+                        tempComponent.value = componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+                }
+                else if (componentContainer[temp].component.type == "PS") {
+                    if (checkOverlap(x, y, 20 * 4, 20 * 4, componentContainer[temp])) {
+
+                        var tempComponent = new ps(canvas, x, y);
+                        tempComponent.value = componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+
+                }
+                else if (componentContainer[temp].component.type == "G") {
+                    if (checkOverlap(x, y, 20 * 4, 20 * 2, componentContainer[temp])) {
+
+                        var tempComponent = new g(canvas, x, y);
+                        tempComponent.value = componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+
+                }
+                else if (componentContainer[temp].component.type == "L") {
+                    if (checkOverlap(x, y, 20 * 3, 20 * 4, componentContainer[temp])) {
+
+                        var tempComponent = new rl(canvas, x, y);
+                        tempComponent.value = componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+
+                }
+                else if (componentContainer[temp].component.type == "RG") {
+                    if (checkOverlap(x, y, 20 * 4, 20 * 4, componentContainer[temp])) {
+
+                        var tempComponent = new rg(canvas, x, y);
+                        tempComponent.value = componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+
+                }
+                else if (componentContainer[temp].component.type == "CRO") {
+                    if (checkOverlap(x, y, 20 * 11, 20 * 6, componentContainer[temp])) {
+
+                        tempComponent = new cro(canvas, x, y);
+                        tempComponent.value = "OFF"//componentContainer[temp].component.value;
+                        componentContainer[temp].component = tempComponent;
+                        tempComponent.draw();
+
+                        do_not_draw = true;
+                    }
+                    else {
+                        do_not_draw = false;
+                    }
+
+                }
+
+                drawAll();
+                return;
+            }
+
+            ////do_not_draw = true;
+            if (changeKey == 0)                       // resistor drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 4, 20 * 3)) {
+
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    res1ghost = new r11(canvas, x, y);
+                    res1ghost.alpha = ghostAlpha
+                    res1ghost.draw();
+
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+
+            }
+            else if (changeKey == 1)                       // resistor drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 4, 20 * 3)) {
+
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    resfghost = new rf(canvas, x, y);
+                    resfghost.alpha = ghostAlpha
+                    resfghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+
+
+            }
+            else if (changeKey == 2)                       // capacitor drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 3, 20 * 3)) {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    capghost = new c(canvas, x, y);
+                    capghost.alpha = ghostAlpha
+                    capghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+            }
+            else if (changeKey == 3)                       // power supply drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 4, 20 * 4)) {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    sourceghost = new ps(canvas, x, y);
+                    sourceghost.alpha = ghostAlpha
+                    sourceghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+
+            }
+            else if (changeKey == 4)                       // op-amp drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 5, 20 * 4)) {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    opampghost = new op(canvas, x, y);
+                    opampghost.alpha = ghostAlpha
+                    opampghost.value = document.getElementById("b5").value;
+
+                    opampghost.draw();
+                    drawAll();
+                    //do_not_draw = true;
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+            }
+            else if (changeKey == 5)                       // ground drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 4, 20 * 2)) {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    gndghost = new g(canvas, x, y);
+                    gndghost.alpha = ghostAlpha
+                    gndghost.draw();
+                    drawAll();
+                    //do_not_draw = true;
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+
+            }
+            else if (changeKey == 6)                       // load resistance drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 3, 20 * 4)) {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    loadghost = new rl(canvas, x, y);
+                    loadghost.alpha = ghostAlpha
+                    loadghost.draw();
+                    drawAll();
+                    //do_not_draw = true;
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+
+            }
+            else if (changeKey == 7)                       // CRO drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 11, 20 * 6)) {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    oscghost = new cro(canvas, x, y);
+                    oscghost.alpha = ghostAlpha
+                    oscghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+
+            }
+            else if (changeKey == 8)                       // connection drawing mode
+            {
+
+
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.beginPath();
+                context.arc(x, y, 5, 0, 2 * Math.PI, true);
+
+                context.fillStyle = "blue"
+                nodeBoard.innerText = ""
+
+                for (i = 0; i < connectionContainer.length; i++) {
+                    for (j = 0; j < connectionContainer[i].x.length; j++) {
+                        if (x == connectionContainer[i].x[j] && y == connectionContainer[i].y[j]) {
+                            context.fillStyle = "red"
+                            nodeBoard.innerText = "link " + j + " x,y= " + x + "," + y
+                        }
+                    }
+                }
+                context.fill();
+                context.closePath();
+                drawAll()
+
+            }
+            else if (changeKey == 9)                       // pot drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 4, 20 * 3)) {
+
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    potghost = new pot(canvas, x, y);
+                    potghost.alpha = ghostAlpha
+                    potghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+
+
+            }
+            else if (changeKey == 10)                       // pot drawing mode
+            {
+                if (checkOverlap(x, y, 20 * 4, 20 * 4)) {
+
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    rgghost = new rg(canvas, x, y);
+                    rgghost.alpha = ghostAlpha
+                    rgghost.draw();
+                    drawAll();
+                    do_not_draw = true;
+                }
+                else {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    drawAll();
+                    do_not_draw = false;
+                }
+
+
+            }
+
+        }
+
+        function mouseevt(x, y) {
+            x = Math.floor(x / pixel) * pixel
+            y = Math.floor(y / pixel) * pixel
+
+            // if move component is on, detect the component being selected
+            for (count = 0; count < componentContainer.length; count++) {
+                if (dragFlag == 0 && moveFlag == 1) {
+                    if (x >= componentContainer[count].component.x && x <= componentContainer[count].component.x + componentContainer[count].component.width) {
+                        if (y >= componentContainer[count].component.y && y <= componentContainer[count].component.y + componentContainer[count].component.height) {
+
+                            dragFlag = 1;
+                            temp = count;
+                            moveFlag = 2;
+                            console.log("selected" + componentContainer[count].component.type);
+                            return;
+
+                        }
+                    }
+                }
+            }
+
+            //CROchanges
+
+            for (i = 0; i < componentContainer.length; i++) {
+                if (componentContainer[i].component.type == "CRO") {  //console.log("check1");
+
+                    if (componentContainer[i].component.x4 < x && componentContainer[i].component.x4 + 43 > x && componentContainer[i].component.y4 < y && componentContainer[i].component.y4 + 20 > y) {
+                        changeKey = 12;
+                        // //console.log("checkMain");
+                        //  //console.log(componentContainer[i].component.x4,componentContainer[i].component.x4+30,x,componentContainer[i].component.y4,componentContainer[i].component.y4);
+
+                        document.getElementById("croOP").style.display = "block"
+
+                        //CROCHANGESFORINPUT
+                        if (typeof vinp === "undefined" || typeof freq === "undefined" && typeof rval === "undefined" && typeof rfeed === "undefined") {
+                            alert("Please Enter the values of Input Signal\nFrequency\nResistance\nFeedback Resistance");
+                        }
+                        else if (typeof vinp === "undefined" || typeof freq === "undefined" && typeof rval === "undefined") {
+                            alert("Please Enter the values of Input Signal\nFrequency\nResistance");
+                        }
+                        else if (typeof vinp === "undefined" || typeof freq === "undefined" && typeof rfeed === "undefined") {
+                            alert("Please Enter the values of Input Signal\nFrequency\nFeedback Resistance");
+                        }
+                        else if (typeof rval === "undefined" && typeof rfeed === "undefined") {
+                            alert("Please Enter the values of Resistance\nFeedback Resistance");
+                        }
+
+                        else if (typeof vinp === "undefined" || typeof freq === "undefined") {
+                            alert("Please enter the value of Input signal & Frequency");
+                        }
+                        else if (typeof rval === "undefined") {
+                            alert("Please enter the value of Resistance");
+                        }
+                        else if (typeof rfeed === "undefined") {
+                            alert("Please enter the value of Feedback Resistance");
+                        }
+
+
+                    }
+
+                }
+            }
+
+            //
+
+
+            if (moveFlag == 2) {
+                moveFlag = 0;
+                dragFlag = 0;
+                return;
+            }
+            flag2 = 0;
+            if (changeKey == 0)                       // resistor drawing mode
+            {
+                if (do_not_draw) {
+                    var res1 = new r11(canvas, x, y);
+
+                    componentContainer.push({ component: res1, x: x, y: y, x1: res1.x1, y1: res1.y1, id: "b1" });
+                    undo.push("component");
+                    document.getElementById("b1").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;
+                    document.getElementById("b5").selectedIndex = 0;
+                    document.getElementById("list0").selectedIndex = 0;
+                    rval = parseFloat(prompt("Please Enter value of resistance in ohms", "ohms"))
+
+                    do {
+                        if (isNaN(rval)) {
+                            alert("Please enter numeric values")
+                            rval = parseFloat(prompt("Please Enter value of resistance in ohms", "ohms"))
+                        }
+                        else { break; }
+                    } while (true)
+
+                    res1.value = rval;
+                    res1.draw();
+                }
+
+            }
+            else if (changeKey == 1)                   // feedback resistor mode
+            {
+                if (do_not_draw) {
+                    var resf = new rf(canvas, x, y);
+
+                    componentContainer.push({ component: resf, x: x, y: y, x1: resf.x1, y1: resf.y1, id: "b2" });
+                    undo.push("component");
+                    document.getElementById("b2").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0
+                    document.getElementById("b5").selectedIndex = 0
+                    document.getElementById("list0").selectedIndex = 0;
+
+                    rfeed = parseFloat(prompt("Please Enter value of resistance in ohms", "ohms"))
+
+                    do {
+                        //alert(isNaN(rfeed))
+                        if (isNaN(rfeed)) {
+                            alert("Please enter numeric values")
+                            rfeed = parseFloat(prompt("Please Enter value of resistance in ohms", "ohms"))
+                        }
+                        else { break; }
+                    } while (true)
+
+                    //gain = (rfeed * -1)/rval;
+                    //document.getElementById("textGain").value = gain;
+                    gainFlag = true;
+
+                    resf.value = rfeed
+                    resf.draw();
+                }
+            }
+            else if (changeKey == 2)                   // capacitor mode
+            {
+                if (do_not_draw) {
+                    var cap = new c(canvas, x, y);
+
+                    componentContainer.push({ component: cap, x: x, y: y, x1: cap.x1, y1: cap.y1, id: "b3" });
+                    undo.push("component");
+
+                    document.getElementById("b3").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;
+                    document.getElementById("b5").selectedIndex = 0;
+                    document.getElementById("list0").selectedIndex = 0;
+
+                    cap.value = 100 //capacitance
+                    cap.draw();
+                }
+            }
+            else if (changeKey == 3)                     // input signal
+            {
+                if (do_not_draw) {
+                    var source = new ps(canvas, x, y);
+
+                    componentContainer.push({ component: source, x: x, y: y, x1: source.x1, y1: source.y1, id: "b4" });
+                    undo.push("component");
+
+
+                    list_value = parseFloat(document.getElementById("b4").value);
+                    document.getElementById("b4").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;
+                    document.getElementById("b5").selectedIndex = 0;
+                    document.getElementById("list0").selectedIndex = 0;
+
+                    vinp = parseFloat(prompt("Please Enter value of input voltage in Volts", "Volts"));
+                    do {
+                        if (isNaN(vinp)) {
+                            alert("cannot accept empty Values")
+                            vinp = parseFloat(prompt("Please Enter value of input voltage in Volts", "Volts"));
+                        }
+                        else { break; }
+
+                    } while (true);
+
+                    //CROCHANGES/////////////////////
+                    amp = vinp;
+                    //console.log(amp);
+
+                    freq = parseFloat(prompt("Please Enter value of frequency", "Hz"));
+                    do {
+                        if (isNaN(freq)) {
+                            alert("cannot accept empty Values")
+                            freq = parseFloat(prompt("Please Enter value of frequency", "Hz"));
+                        }
+                        else { break; }
+                    } while (true);
+
+                    //CROCHANGES///////////////////////////
+                    T = 1 / (freq * 2);
+                    //console.log(T);
+
+                    source.value = vinp
+                    source.draw();
+
+                    //document.getElementById("textVin").value = vinp;
+                    //document.getElementById("textFreq").value = freq;
+                    vinFlag = true;
+                }
+            }
+            else if (changeKey == 4)                     // op-amp mode
+            {
+                if (do_not_draw) {
+                    var opamp = new op(canvas, x, y);
+                    opamp.value = document.getElementById("b5").value;
+                    opSat = parseFloat(opamp.value);
+                    opamp.draw();
+                    componentContainer.push({ component: opamp, x: x, y: y, x1: opamp.x1, y1: opamp.y1, id: "b5" });
+                    undo.push("component");
+
+                    document.getElementById("b5").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;
+                    document.getElementById("b5").selectedIndex = 0;
+                    document.getElementById("list0").selectedIndex = 0;
+
+                }
+            }
+            else if (changeKey == 5)                    //   ground mode
+            {
+                if (do_not_draw) {
+                    var gnd = new g(canvas, x, y);
+                    gnd.draw();
+                    componentContainer.push({ component: gnd, x: x, y: y, x1: gnd.x1, y1: gnd.y1, id: "b6" });
+                    undo.push("component");
+
+                    document.getElementById("b6").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;
+                    document.getElementById("b5").selectedIndex = 0;
+                    document.getElementById("list0").selectedIndex = 0;
+
+                }
+            }
+            else if (changeKey == 6)                   // load resistance
+            {
+                if (do_not_draw) {
+                    var load = new rl(canvas, x, y);
+
+                    componentContainer.push({ component: load, x: x, y: y, x1: load.x1, y1: load.y1, id: "b7" });
+                    undo.push("component");
+
+                    document.getElementById("b7").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;
+                    document.getElementById("b5").selectedIndex = 0;
+                    document.getElementById("list0").selectedIndex = 0;
+
+
+                    load.value = 100
+                    load.draw();
+
+                }
+            }
+            else if (changeKey == 7)                        // cro
+            {
+                if (do_not_draw) {
+                    var osc = new cro(canvas, x, y);
+
+                    componentContainer.push({ component: osc, x: x, y: y, x1: osc.x1, y1: osc.y1, id: "b8" });
+                    undo.push("component");
+
+                    document.getElementById("b8").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0;
+                    document.getElementById("b5").selectedIndex = 0;
+                    document.getElementById("list0").selectedIndex = 0;
+
+                    // vout = gain * vinp;
+                    //  vout = Math.round(vout);
+                    osc.value = "OFF";
+                    osc.draw();
+
+                    //interval = setInterval( drawOP,100);
+                }
+            }
+            else if (changeKey == 9)                   // potentionmeter resistor mode
+            {
+                if (do_not_draw) {
+                    var rpot = new pot(canvas, x, y);
+
+                    componentContainer.push({ component: rpot, x: x, y: y, x1: rpot.x1, y1: rpot.y1, id: "b8" });
+                    undo.push("component");
+                    document.getElementById("b9").disabled = true;
+                    document.getElementById("potValContainer").innerHTML = '<div style="background-color: white;margin: 0px 5px;" >Potentiometer : <span id="potval" style="width:fit-content;text-align: right;">0 ohm</span><br><input type ="range" step="10" max="1000" min="0" value ="0" onchange="potValue(this.value)" id="pot"/></div>'
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0
+                    document.getElementById("b5").selectedIndex = 0
+                    document.getElementById("list0").selectedIndex = 0;
+
+                    //pot.value = rfeed
+                    rpot.draw();
+                }
+            }
+            else if (changeKey == 10)                   // gain resistor mode
+            {
+                if (do_not_draw) {
+                    var rgain = new rg(canvas, x, y);
+
+                    componentContainer.push({ component: rgain, x: x, y: y, x1: rgain.x1, y1: rgain.y1, id: "b2" });
+                    undo.push("component");
+                    document.getElementById("b11").disabled = true;
+                    changeKey = -1;
+                    document.getElementById("b4").selectedIndex = 0
+                    document.getElementById("b5").selectedIndex = 0
+                    document.getElementById("list0").selectedIndex = 0;
+
+                    rgain.value = parseFloat(prompt("Please Enter value of resistance in ohms", "ohms"))
+
+                    do {
+                        //alert(isNaN(rfeed))
+                        if (isNaN(rgain.value)) {
+                            alert("Please enter numeric values")
+                            rgain.value = parseFloat(prompt("Please Enter value of resistance in ohms", "ohms"))
+                        }
+                        else { break; }
+                    } while (true)
+
+                    rgain.draw();
+                }
+            }
+            else if (changeKey == 8)                       /************* connections ***************/ {
+                flag2 = 1;
+
+                for (var i = 0; i < componentContainer.length; i++) {
+
+                    if (componentContainer[i].component.type == "OA") {
+
+                        // dist bw mouse and ip1 of op
+                        r1 = Math.pow(componentContainer[i].component.x1 - x, 2) + Math.pow(componentContainer[i].component.y1 - y, 2);
+                        r1 = Math.sqrt(r1);
+
+                        // dist bw mouse and op of op
+                        r2 = Math.pow(componentContainer[i].component.x2 - x, 2) + Math.pow(componentContainer[i].component.y2 - y, 2);
+                        r2 = Math.sqrt(r2);
+
+                        // dist bw mouse and ip2 of op
+                        r3 = Math.pow(componentContainer[i].component.x3 - x, 2) + Math.pow(componentContainer[i].component.y3 - y, 2);
+                        r3 = Math.sqrt(r3);
+
+                    }
+                    else {
+
+                        //var x2=(componentContainer[i].component.x1+x)/2;
+                        //var y2=componentContainer[i].component.y1+y;
+
+                        // dist of click from ip pin
+                        r1 = Math.pow(componentContainer[i].component.x1 - x, 2) + Math.pow(componentContainer[i].component.y1 - y, 2);
+                        r1 = Math.sqrt(r1);
+
+                        //dist of click from op pin
+                        r2 = Math.pow(componentContainer[i].component.x2 - x, 2) + Math.pow(componentContainer[i].component.y2 - y, 2);
+                        r2 = Math.sqrt(r2);
+
+                        r3 = 100
+                    }
+
+                    if (r2 < 5) // if output of component is clicked
+                    {
+                        if (start1 == 0) {
+                            //console.log("First click: op1 of " + i);
+                            storei = i;
+                            start1 = 1;
+                            //console.log(componentContainer[i].component.opNo)
+                            pair[0] = componentContainer[i].component.opNo
+                            comp1ID = i;
+                            x1 = componentContainer[i].component.x2
+                            y1 = componentContainer[i].component.y2
+
+                            if (componentContainer[i].component.type == "R1")
+                                pin1 = "r"
+                            else if (componentContainer[i].component.type == "RF")
+                                pin1 = "r"
+                            else if (componentContainer[i].component.type == "POT")
+                                pin1 = "r"
+                            else if (componentContainer[i].component.type == "RG")
+                                pin1 = "b"
+                            else if (componentContainer[i].component.type == "C")
+                                pin1 = "r"
+                            else if (componentContainer[i].component.type == "OA")
+                                pin1 = "r"
+                            else if (componentContainer[i].component.type == "PS")
+                                pin1 = "b"
+                            else if (componentContainer[i].component.type == "G")
+                                pin1 = "t"
+                            else if (componentContainer[i].component.type == "L")
+                                pin1 = "b"
+                            else if (componentContainer[i].component.type == "CRO")
+                                pin1 = "b"
+
+
+
+
+
+                            //drawLineContainer.push([componentContainer[i].component.x2 , componentContainer[i].component.y2]);
+                            break;
+                        }
+                        else if (start1 == 1) {
+                            //console.log("second click: op1 of " + i);
+
+                            start1 = 0;
+                            flag = 2;
+                            //console.log(componentContainer[i].component.opNo)    
+
+                            // add x2,y2
+                            if (storei == i) {
+                                alert("cannot short components")
+                                start1 = 0
+                                break;
+                            }
+                            else {
+                                pair[1] = componentContainer[i].component.opNo
+                                comp2ID = i;
+                                // drawLineContainer[drawLineContainer.length - 1][2] = componentContainer[i].component.x2
+                                //drawLineContainer[drawLineContainer.length - 1][3] = componentContainer[i].component.y2
+
+                                x2 = componentContainer[i].component.x2
+                                y2 = componentContainer[i].component.y2
+
+
+                                if (componentContainer[i].component.type == "R1")
+                                    pin2 = "r"
+                                else if (componentContainer[i].component.type == "RF")
+                                    pin2 = "r"
+                                else if (componentContainer[i].component.type == "POT")
+                                    pin2 = "r"
+                                else if (componentContainer[i].component.type == "RG")
+                                    pin2 = "b"
+                                else if (componentContainer[i].component.type == "C")
+                                    pin2 = "r"
+                                else if (componentContainer[i].component.type == "OA")
+                                    pin2 = "r"
+                                else if (componentContainer[i].component.type == "PS")
+                                    pin2 = "b"
+                                else if (componentContainer[i].component.type == "G")
+                                    pin2 = "t"
+                                else if (componentContainer[i].component.type == "L")
+                                    pin2 = "b"
+                                else if (componentContainer[i].component.type == "CRO")
+                                    pin2 = "b"
+
+                                console.log("pin1 case1" + pin1)
+                                console.log("pin2 case1" + pin2)
+                                connection = new myConnection(canvas, x1, y1, x2, y2, pin1, pin2);
+                                connection = lineOverlap(connection, comp1ID, comp2ID);
+                                connectionContainer.push(connection)
+                                undo.push("connection");
+                                start1 = 0
+                                break;
+                            }
+                        }
+
+
+                    }
+                    else if (r1 < 5)   // if input of component is clicked
+                    {
+                        if (start1 == 0) {
+                            //console.log("First click: ip1 of " + i);
+                            storei = i;
+                            start1 = 1;
+                            //console.log(componentContainer[i].component.ipNo)
+                            pair[0] = componentContainer[i].component.ipNo
+                            comp1ID = i;
+
+                            x1 = componentContainer[i].component.x1
+                            y1 = componentContainer[i].component.y1
+                            //drawLineContainer.push([componentContainer[i].component.x1 , componentContainer[i].component.y1]);
+
+                            if (componentContainer[i].component.type == "R1")
+                                pin1 = "l"
+                            else if (componentContainer[i].component.type == "RF")
+                                pin1 = "l"
+                            else if (componentContainer[i].component.type == "POT")
+                                pin1 = "l"
+                            else if (componentContainer[i].component.type == "RG")
+                                pin1 = "t"
+                            else if (componentContainer[i].component.type == "C")
+                                pin1 = "l"
+                            else if (componentContainer[i].component.type == "OA")
+                                pin1 = "l"
+                            else if (componentContainer[i].component.type == "PS")
+                                pin1 = "t"
+                            else if (componentContainer[i].component.type == "G")
+                                pin1 = "b"
+                            else if (componentContainer[i].component.type == "L")
+                                pin1 = "t"
+                            else if (componentContainer[i].component.type == "CRO")
+                                pin1 = "b"
+
+                            console.log("pin1 case2" + pin1)
+
+                            break;
+
+                        }
+                        else if (start1 == 1) {
+                            //console.log("second click: ip1 of " + i);
+                            //storei =i;
+                            start1 = 0;
+                            flag = 2;
+                            //console.log(componentContainer[i].component.ipNo)
+                            if (storei == i) {
+                                alert("cannot short components")
+                                start1 = 0
+                                break;
+                            }
+                            else {
+                                pair[1] = componentContainer[i].component.ipNo
+                                comp2ID = i;
+                                x2 = componentContainer[i].component.x1
+                                y2 = componentContainer[i].component.y1
+
+
+                                if (componentContainer[i].component.type == "R1")
+                                    pin2 = "l"
+                                else if (componentContainer[i].component.type == "RF")
+                                    pin2 = "l"
+                                else if (componentContainer[i].component.type == "POT")
+                                    pin2 = "l"
+                                else if (componentContainer[i].component.type == "RG")
+                                    pin2 = "t"
+                                else if (componentContainer[i].component.type == "C")
+                                    pin2 = "l"
+                                else if (componentContainer[i].component.type == "OA")
+                                    pin2 = "l"
+                                else if (componentContainer[i].component.type == "PS")
+                                    pin2 = "t"
+                                else if (componentContainer[i].component.type == "G")
+                                    pin2 = "b"
+                                else if (componentContainer[i].component.type == "L")
+                                    pin2 = "t"
+                                else if (componentContainer[i].component.type == "CRO")
+                                    pin2 = "b"
+                                //drawLineContainer[drawLineContainer.length - 1][2] = componentContainer[i].component.x1 
+                                // drawLineContainer[drawLineContainer.length - 1][3] = componentContainer[i].component.y1
+
+                                console.log("pin2 case2" + pin2)
+
+                                connection = new myConnection(canvas, x1, y1, x2, y2, pin1, pin2);
+                                connection = lineOverlap(connection, comp1ID, comp2ID);
+                                connectionContainer.push(connection)
+                                undo.push("connection");
+                                start1 = 0
+                                break;
+                            }
+                        }
+                    }
+                    else if (r3 < 5) //if second ip of opamp is clicked
+                    {
+                        if (start1 == 0) {
+                            ////console.log("First click: ip2 of " + i);
+
+                            storei = i;
+                            start1 = 1;
+                            ////console.log(componentContainer[i].component.ip2No)
+                            pair[0] = componentContainer[i].component.ip2No
+                            comp1ID = i;
+                            x1 = componentContainer[i].component.x3
+                            y1 = componentContainer[i].component.y3
+
+                            pin1 = "l"
+
+                            console.log("pin1 case3" + pin1)
+
+                            //drawLineContainer.push([componentContainer[i].component.x3 , componentContainer[i].component.y3]);
+                            break;
+                        }
+                        else if (start1 == 1) {
+                            ////console.log("second click: ip2 of " + i);
+                            //storei =i;
+                            ////console.log(componentContainer[i].component.ip2No)
+                            if (storei == i) {
+                                alert("cannot short components")
+                                start1 = 0
+                                break;
+                            }
+                            else {
+
+                                pair[1] = componentContainer[i].component.ip2No
+                                comp2ID = i;
+                                x2 = componentContainer[i].component.x3
+                                y2 = componentContainer[i].component.y3
+
+                                pin2 = "l"
+                                // drawLineContainer[drawLineContainer.length - 1][2] = componentContainer[i].component.x3 
+                                // drawLineContainer[drawLineContainer.length - 1][3] = componentContainer[i].component.y3
+
+
+                                connection = new myConnection(canvas, x1, y1, x2, y2, pin1, pin2);
+                                console.log(connection)
+                                connection = lineOverlap(connection, comp1ID, comp2ID);
+                                console.log(connection)
+                                connectionContainer.push(connection)
+                                undo.push("connection");
+                                start1 = 0
+                                break;
+                            }
+                        }
+                    }
+                    /*else if(r1>5 && r2> 5 && r3>5)
+                    {
+                        alert("outside")
+                    }*/
+
+
+
+                }
+
+                if (pair.length == 2) {
+                    // alert("adding pair")
+                    pairContainer.push(pair)
+
+                    pair = []
+                    var flag = 2
+                }
+
+
+
+                if (flag == 2) // if flag == 2 redraw everything 
+                {
+                    drawAll()
+                }
+                flag = 0;
+            }
+            else if (changeKey == 12)                       /************* cro graph *****************/ {
+
+                ////console.log(list_value);
+                alert(list_value);
+                ////console.log("///////");
+                switch (list_value) {
+                    case 1:
+                        Sine_Input_for_inverter();
+                        break;
+
+                    case 3:
+                        Triangular_Input_For_inverter();
+                        break;
+
+                    case 2:
+                        Square_Input_for_inverter();
+                        break;
+                }
+            }
+
+            else {
+                alert("Select a component " + x + " " + y);
+            }
+
+            flagStack.push(flag2);
+
+            gain = (rfeed * -1) / rval;
+            vout = gain * vinp;
+
+        }
+
+        function grid(pix) {
+            var i;
+            var canvas23 = document.getElementById("mycanvas")
+            var context = canvas23.getContext("2d")
+
+            for (i = pix; i < 1000; i += pix) {
+
+                context.beginPath()
+                context.moveTo(i, 0)
+                context.lineTo(i, 1000)
+                context.strokeStyle = "green"
+                context.lineWidth = 1;
+                context.stroke();
+
+                context.beginPath()
+                context.moveTo(0, i)
+                context.lineTo(1000, i)
+                context.stroke();
+                context.closePath();
+            }
+        }
+
+        grid(20)
+
+        function drawAll() {
+            context.globalAlpha = 1;
+            grid(20)
+            //context.clearRect(0, 0, canvas.width, canvas.height);
+            var t = 0
+            // component drawing
+
+
+            if (componentContainer.length == 0) {
+                temporary = 0;
+
+            }
+            else {
+
+                for (t = 0; t < componentContainer.length; t++) {
+                    componentContainer[t].component.draw();
+                }
+
+                // connection drawing
+                for (t = 0; t < connectionContainer.length; t++) {
+                    ////console.log("component draw wala i : " + i)
+
+                    connectionContainer[t].drawline(connectionContainer[t].color);
+                }
+                //alert("after clear");
+            }
+
+
+
+        }
+        
+        function potValue(value) {
+            rval[5] = value;
+            document.getElementById('potval').innerText = value + ' ohm';
+        }
+
+        function changeKeyTo(val) {
+            changeKey = val;
+        }
+
+        function movec() {
+            moveFlag = 1;
+            dragFlag = 0;
+        }
+
+        var allCorrect = 1;
+
+    </script>
+
+    <script src="../../src/lineOverlap.js"></script>
+    <script src="functions.js"></script>
+    <script src="../../src/graph.ob.js"></script>
+    <script src="../../src/graph_line_use.ob.js"></script>
+    <script src="../../src/mouseevent.ob.js"></script>
+
+</body>
+
+</html>
